@@ -1,10 +1,7 @@
-Notes on how this project started...
+    npm install --global vue-cli
 
-    $ npm install --global vue-cli
 
-And then...
-
-    $ vue init webpack cblation
+    Pro:cbana steveyen$ vue init webpack cblation
 
       This will install Vue 2.x version of template.
 
@@ -29,7 +26,4 @@ And then...
 
        Documentation can be found at https://vuejs-templates.github.io/webpack
 
-And then...
-
-    $ npm install --save admin-lte
 
