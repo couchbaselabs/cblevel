@@ -1,7 +1,8 @@
-    npm install --global vue-cli
+Notes on how this started
 
+    $ npm install --global vue-cli
 
-    Pro:cbana steveyen$ vue init webpack cblation
+    $ vue init webpack cblevel
 
       This will install Vue 2.x version of template.
 
@@ -25,5 +26,4 @@
          npm run dev
 
        Documentation can be found at https://vuejs-templates.github.io/webpack
-
 
