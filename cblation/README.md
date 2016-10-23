@@ -1,6 +1,6 @@
-# cblation
+# cblevel
 
-> cblation rhymes with celebration
+> cblevel -- a couchbaselabs project for data visualization
 
 ## Build Setup
 
