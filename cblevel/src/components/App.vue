@@ -62,7 +62,7 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <router-view :pages="pages"></router-view>
+    <router-view :pages="pages" :dataSources="dataSources"></router-view>
   </div>
   <!-- /.content-wrapper -->
 
@@ -168,7 +168,8 @@ import BarTop from './BarTop'
 
 function makePage (descriptionIn) {
   return {
-    description: descriptionIn || 'no page description yet'
+    description: descriptionIn || 'no page description yet',
+    dataSourceName: null
   }
 }
 
@@ -181,6 +182,11 @@ export default {
     return {
       pages: {
         'default': makePage('a starting page for you')
+      },
+      dataSources: {
+        'default': {
+          url: '/api/index/bs0/query'
+        }
       }
     }
   },

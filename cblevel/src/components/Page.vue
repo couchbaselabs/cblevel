@@ -38,7 +38,7 @@
             </button>
           </span>
         </div>
-      </div>
+      </form>
     </section>
   </div>
 
@@ -57,13 +57,14 @@ function pageId ($this) {
 
 export default {
   name: 'page',
-  props: ['pages'],
+  props: ['pages', 'dataSources'],
   computed: {
     page_id () { return pageId(this) },
     page () { return this.pages[pageId(this)] }
   },
   data () {
     return {
+      dataSourceName: null,
       searchInput: null,
       searchCurrent: null,
       searchResult: null,
@@ -111,10 +112,27 @@ export default {
       }
     },
     pageSearch (event) {
-      // `this` inside methods points to the Vue instance
-      console.log('Hello ' + this.searchInput + '!')
-      // `event` is the native DOM event
-      console.log(event.target.tagName)
+      var $this = this
+
+      console.log('Hello ' + $this.searchInput + '!')
+
+      var ds = $this.dataSources[$this.dataSourceName || 'default']
+      if (!ds) {
+        window.alert('unknown data source: ' + $this.dataSourceName || 'default')
+        return
+      }
+
+      window.$.ajax({
+        type: 'POST',
+        url: ds.url,
+        data: JSON.stringify({
+          query: {query: $this.searchInput || ''}
+        }),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: (data) => { $this.searchResult = data },
+        failure: (errMsg) => { window.alert(errMsg) }
+      })
     }
   }
 }
