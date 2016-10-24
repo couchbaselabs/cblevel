@@ -8,6 +8,20 @@
           {{page && page.description}}
         </small>
       </h1>
+
+      <div class="page-options">
+        <div class="dropdown">
+          <a class="dropdown-toggle" aria-expanded="true"
+             data-toggle="dropdown" href="#">
+            <i class="fa fa-gear"></i> Options <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Rename this page</a></li>
+            <li><a href="#">Clone this page</a></li>
+            <li><a href="#">Delete this page</a></li>
+          </ul>
+        </div>
+      </div>
     </section>
 
     <!-- Main content -->
@@ -58,4 +72,32 @@ export default {
 </script>
 
 <style scoped>
+.content-header > .page-options {
+  float: right;
+  background: transparent;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 12px;
+  padding: 7px 5px;
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  border-radius: 2px;
+}
+.content-header > .page-options .dropdown-menu {
+  margin-left: -6.5em;
+}
+.content-header > .page-options a {
+  color: #444;
+  text-decoration: none;
+  display: inline-block;
+}
+.content-header > .page-options > li > a > .fa,
+.content-header > .page-options > li > a > .glyphicon,
+.content-header > .page-options > li > a > .ion {
+  margin-right: 5px;
+}
+.content-header > .page-options > li + li:before {
+  content: '>\00a0';
+}
 </style>
