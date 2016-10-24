@@ -18,7 +18,7 @@
           <ul class="dropdown-menu">
             <li><a v-on:click="pageRename">Rename this page</a></li>
             <li><a href="#">Clone this page</a></li>
-            <li><a href="#">Delete this page</a></li>
+            <li><a v-on:click="pageDelete">Delete this page</a></li>
           </ul>
         </div>
       </div>
@@ -74,6 +74,18 @@ export default {
         this.pages[name] = page
 
         this.$router.push('/page/' + name)
+      }
+    },
+    pageDelete (event) {
+      if (window.confirm('Are you sure you want to delete this page?')) {
+        delete this.pages[this.$route.params.page_id]
+
+        for (var name in this.pages) {
+          this.$router.push('/page/' + name)
+          return
+        }
+
+        this.$router.push('/')
       }
     },
     pageSearch (event) {
