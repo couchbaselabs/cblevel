@@ -17,17 +17,15 @@
           </a>
           <ul class="dropdown-menu">
             <li><a v-on:click="pageRename">Rename this page</a></li>
-            <li><a href="#">Clone this page</a></li>
+            <li><a v-on:click="pageClone">Clone this page</a></li>
             <li><a v-on:click="pageDelete">Delete this page</a></li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- Main content -->
+    <!-- Page content -->
     <section class="content">
-      <!-- Your Page Content Here -->
-
       <div>
         <div class="input-group">
           <input type="text" name="q"
@@ -75,6 +73,18 @@ export default {
 
         this.$router.push('/page/' + name)
       }
+    },
+    pageClone (event) {
+      function cloneName (name) {
+        return 'clone of ' + name
+      }
+
+      var pageName = cloneName(this.$route.params.page_id)
+      while (this.pages[cloneName]) { pageName = cloneName(pageName) }
+      this.$set(this.pages, pageName,
+                JSON.parse(JSON.stringify(this.pages[this.$route.params.page_id])))
+
+      this.$router.push('/page/' + pageName)
     },
     pageDelete (event) {
       if (window.confirm('Are you sure you want to delete this page?')) {
