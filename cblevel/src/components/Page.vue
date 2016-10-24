@@ -16,7 +16,7 @@
             <i class="fa fa-gear"></i> Options <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
-            <li><a href="#">Rename this page</a></li>
+            <li><a v-on:click="pageRename">Rename this page</a></li>
             <li><a href="#">Clone this page</a></li>
             <li><a href="#">Delete this page</a></li>
           </ul>
@@ -35,7 +35,7 @@
           <span class="input-group-btn">
             <button type="submit" name="search"
                     class="btn btn-flat"
-                    v-on:click="search">
+                    v-on:click="pageSearch">
               <i class="fa fa-search"></i>
             </button>
           </span>
@@ -61,7 +61,22 @@ export default {
     page () { return this.pages[this.$route.params.page_id] }
   },
   methods: {
-    search (event) {
+    pageRename (event) {
+      var name = window.prompt('Rename Page\nPlease enter a page name:')
+      if (name) {
+        if (this.pages[name]) {
+          window.alert('ERROR: that page name is already taken')
+          return
+        }
+        var namePrev = this.$route.params.page_id
+        var page = this.pages[namePrev]
+        delete this.pages[namePrev]
+        this.pages[name] = page
+
+        this.$router.push('/page/' + name)
+      }
+    },
+    pageSearch (event) {
       // `this` inside methods points to the Vue instance
       console.log('Hello ' + this.name + '!')
       // `event` is the native DOM event
