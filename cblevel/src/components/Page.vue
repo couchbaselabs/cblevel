@@ -40,19 +40,20 @@
         </div>
       </form>
 
-      <div v-if="searchErr"
-           class="alert alert-error">
-        <h4><i class="icon fa fa-warning"></i> Error</h4>
-        search error: {{searchErr}}
-      </div>
-
-      <div v-if="searchResult" class="box">
+      <div v-if="page.search.input" class="box">
         <div class="box-header">
-          <h3 class="box-title">{{searchInput}}</h3>
+          <h3 class="box-title">{{page.search.input}}</h3>
         </div>
         <!-- /.box-header -->
 
-        <div class="box-body table-responsive no-padding">
+        <div v-if="page.search.err"
+             class="alert alert-error">
+          <h4><i class="icon fa fa-warning"></i> Error</h4>
+          search error: {{page.search.err}}
+        </div>
+
+        <div v-if="page.search.result"
+             class="box-body table-responsive no-padding">
           <table class="table table-hover">
             <tbody>
             <tr>
@@ -60,7 +61,7 @@
               <th>Shard</th>
               <th>Score</th>
             </tr>
-            <tr v-for="x in searchResult.hits">
+            <tr v-for="x in page.search.result.hits">
               <td>{{x.id}}</td>
               <td>{{x.index}}</td>
               <td>{{x.score}}</td>
@@ -71,6 +72,11 @@
         <!-- /.box-body -->
       </div>
     </section>
+
+    <pre>
+      {{page_id}}
+      {{page}}
+    </pre>
   </div>
 
   <div v-else>
@@ -89,33 +95,29 @@ function pageId ($this) {
 export default {
   name: 'page',
   props: ['pages', 'dataSources'],
+  data () {
+    return { searchInput: null }
+  },
   computed: {
     page_id () { return pageId(this) },
     page () { return this.pages[pageId(this)] }
   },
-  data () {
-    return {
-      dataSourceName: null,
-      searchInput: null,
-      searchCurrent: null,
-      searchResult: null,
-      searchErr: null
-    }
-  },
   methods: {
     pageRename (event) {
-      var name = window.prompt('Rename Page\nPlease enter a page name:')
-      if (name) {
-        if (this.pages[name]) {
+      var nameNew = window.prompt('Rename Page\nPlease enter a page name:')
+      if (nameNew) {
+        if (this.pages[nameNew]) {
           window.alert('ERROR: that page name is already taken')
           return
         }
-        var namePrev = this.$route.params.page_id
-        var page = this.pages[namePrev]
-        this.$delete(this.pages, namePrev)
-        this.pages[name] = page
 
-        this.$router.push('/page/' + name)
+        var name = this.$route.params.page_id
+        var page = this.pages[name]
+
+        this.$delete(this.pages, name)
+        this.$set(this.pages, nameNew, page)
+
+        this.$router.push('/page/' + nameNew)
       }
     },
     pageClone (event) {
@@ -123,12 +125,13 @@ export default {
         return 'clone of ' + name
       }
 
-      var pageName = cloneName(pageId(this))
-      while (this.pages[cloneName]) { pageName = cloneName(pageName) }
-      this.$set(this.pages, pageName,
+      var name = cloneName(pageId(this))
+      while (this.pages[name]) { name = cloneName(name) }
+
+      this.$set(this.pages, name,
                 JSON.parse(JSON.stringify(this.pages[pageId(this)])))
 
-      this.$router.push('/page/' + pageName)
+      this.$router.push('/page/' + name)
     },
     pageDelete (event) {
       if (window.confirm('Are you sure you want to delete this page?')) {
@@ -143,11 +146,16 @@ export default {
       }
     },
     pageSearch (event) {
-      var $this = this
+      var page = this.pages[pageId(this)]
 
-      var ds = $this.dataSources[$this.dataSourceName || 'default']
+      page.search.input = this.searchInput || ''
+      page.search.result = null
+      page.search.err = null
+
+      var dsName = page.dataSourceName || 'default'
+      var ds = this.dataSources[dsName]
       if (!ds) {
-        window.alert('unknown data source: ' + $this.dataSourceName || 'default')
+        window.alert('unknown data source: ' + dsName)
         return
       }
 
@@ -155,12 +163,12 @@ export default {
         type: 'POST',
         url: ds.url,
         data: JSON.stringify({
-          query: {query: $this.searchInput || ''}
+          query: {query: page.search.input}
         }),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
-        success: (data) => { $this.searchResult = data },
-        failure: (err) => { $this.searchErr = err }
+        success: (data) => { page.search.result = data },
+        failure: (err) => { page.search.err = err }
       })
     }
   }

@@ -173,7 +173,12 @@ import BarTop from './BarTop'
 function makePage (descriptionIn) {
   return {
     description: descriptionIn || 'no page description yet',
-    dataSourceName: null
+    dataSourceName: null,
+    search: {
+      input: null,
+      result: null,
+      err: null
+    }
   }
 }
 
