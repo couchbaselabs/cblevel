@@ -38,25 +38,17 @@
         </div>
       </div>
 
-      <!-- search form (Optional) -->
-      <form action="#" method="get" class="sidebar-form">
-        <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
-            <span class="input-group-btn">
-              <button type="submit" name="search" id="search-btn"
-                      class="btn btn-flat"><i class="fa fa-search"></i>
-              </button>
-            </span>
-        </div>
-      </form>
-      <!-- /.search form -->
-
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu">
         <li class="header">PAGES</li>
-        <!-- Optionally, you can add icons to the links -->
-        <li><router-link to="/page/foo">foo</router-link></li>
-        <li><router-link to="/page/bar">bar</router-link></li>
+        <template v-for="(page, page_id, page_index) in pages">
+          <li>
+            <router-link v-bind:to="'/page/'+page_id">
+              <i class="fa fa-file-o"></i>
+              <span>{{page_id}}</span>
+            </router-link>
+          </li>
+        </template>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -65,7 +57,7 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <router-view></router-view>
+    <router-view :pages="pages"></router-view>
   </div>
   <!-- /.content-wrapper -->
 
@@ -173,6 +165,14 @@ export default {
   name: 'app',
   components: {
     BarTop
+  },
+  data () {
+    return {
+      pages: {
+        'default': {
+        }
+      }
+    }
   }
 }
 </script>
