@@ -13,22 +13,18 @@
     <!-- Main content -->
     <section class="content">
       <!-- Your Page Content Here -->
-      <div class="box box-default collapsed-box">
-        <div class="box-header with-border">
-          <h3 class="box-title">Expandable</h3>
-          <div class="box-tools pull-right">
-            <button type="button" class="btn btn-box-tool" data-widget="collapse">
-              <i class="fa fa-plus"></i>
+
+      <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search..."/>
+          <span class="input-group-btn">
+            <button type="submit" name="search"
+                    class="btn btn-flat">
+              <i class="fa fa-search"></i>
             </button>
-          </div>
-          <!-- /.box-tools -->
+          </span>
         </div>
-        <!-- /.box-header -->
-        <div class="box-body" style="display: none;">
-           The body of the box
-        </div>
-        <!-- /.box-body -->
-      </div>
+      </form>
     </section>
   </div>
 </template>

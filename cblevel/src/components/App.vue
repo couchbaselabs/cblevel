@@ -170,6 +170,7 @@ export default {
     return {
       pages: {
         'default': {
+          description: 'a starting page for you'
         }
       }
     }
