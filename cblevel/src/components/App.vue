@@ -28,11 +28,11 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="static/lib/AdminLTE-2.3.6/dist/img/user2-160x160.jpg"
+          <img src="static/media/couchbase-logo-solid.server.01.png"
                class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p>Peter Pierce</p>
+          <p>Couchbase Server</p>
           <!-- Status -->
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
