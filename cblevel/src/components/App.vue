@@ -195,4 +195,7 @@ export default {
 </script>
 
 <style>
+.sidebar-menu a.router-link-active {
+  color: #fff;
+}
 </style>
