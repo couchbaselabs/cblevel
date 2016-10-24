@@ -167,7 +167,7 @@
 </template>
 
 <script>
-import BarTop from './components/BarTop'
+import BarTop from './BarTop'
 
 export default {
   name: 'app',

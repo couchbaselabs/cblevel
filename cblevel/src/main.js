@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-import App from './App'
+import App from './components/App'
 import Page from './components/Page'
 
 const routes = [
