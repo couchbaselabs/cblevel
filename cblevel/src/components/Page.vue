@@ -39,6 +39,37 @@
           </span>
         </div>
       </form>
+
+      <div v-if="searchErr"
+           class="alert alert-error">
+        <h4><i class="icon fa fa-warning"></i> Error</h4>
+        search error: {{searchErr}}
+      </div>
+
+      <div v-if="searchResult" class="box">
+        <div class="box-header">
+          <h3 class="box-title">{{searchInput}}</h3>
+        </div>
+        <!-- /.box-header -->
+
+        <div class="box-body table-responsive no-padding">
+          <table class="table table-hover">
+            <tbody>
+            <tr>
+              <th>ID</th>
+              <th>Shard</th>
+              <th>Score</th>
+            </tr>
+            <tr v-for="x in searchResult.hits">
+              <td>{{x.id}}</td>
+              <td>{{x.index}}</td>
+              <td>{{x.score}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- /.box-body -->
+      </div>
     </section>
   </div>
 
@@ -114,8 +145,6 @@ export default {
     pageSearch (event) {
       var $this = this
 
-      console.log('Hello ' + $this.searchInput + '!')
-
       var ds = $this.dataSources[$this.dataSourceName || 'default']
       if (!ds) {
         window.alert('unknown data source: ' + $this.dataSourceName || 'default')
@@ -131,7 +160,7 @@ export default {
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: (data) => { $this.searchResult = data },
-        failure: (errMsg) => { window.alert(errMsg) }
+        failure: (err) => { $this.searchErr = err }
       })
     }
   }
