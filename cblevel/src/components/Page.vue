@@ -46,13 +46,20 @@
         </div>
         <!-- /.box-header -->
 
+        <div v-if="!page.search.err && !page.search.result"
+             class="box-body">
+          <div class="overlay">
+            <i class="fa fa-refresh fa-spin"></i>
+          </div>
+        </div>
+
         <div v-if="page.search.err"
              class="alert alert-error">
           <h4><i class="icon fa fa-warning"></i> Error</h4>
           search error: {{page.search.err}}
         </div>
 
-        <div v-if="page.search.result"
+        <div v-if="page.search.result && page.search.result.hits.length > 0"
              class="box-body table-responsive no-padding">
           <table class="table table-hover">
             <tbody>
@@ -69,7 +76,11 @@
             </tbody>
           </table>
         </div>
-        <!-- /.box-body -->
+
+        <div v-if="page.search.result && page.search.result.hits.length <= 0"
+             class="box-body">
+          no results
+        </div>
       </div>
     </section>
 
