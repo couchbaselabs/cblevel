@@ -188,7 +188,10 @@ export default {
     newPage () {
       var x = 1 + (this.pages.length || 0)
       while (this.pages['page ' + x]) { x++ }
-      this.$set(this.pages, 'page ' + x, makePage())
+      var pageName = 'page ' + x
+      this.$set(this.pages, pageName, makePage())
+
+      this.$router.push('/page/' + pageName)
     }
   }
 }
