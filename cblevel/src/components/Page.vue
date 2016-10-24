@@ -28,11 +28,11 @@
     <section class="content">
       <form v-on:submit.prevent="pageSearch">
         <div class="input-group">
-          <input type="text" name="q"
-                 class="form-control" placeholder="Search..."/>
+          <input type="text" class="form-control"
+                 placeholder="Search..."
+                 v-model="searchInput"/>
           <span class="input-group-btn">
-            <button type="submit" name="search"
-                    class="btn btn-flat"
+            <button type="submit" class="btn btn-flat"
                     v-on:click="pageSearch">
               <i class="fa fa-search"></i>
             </button>
@@ -104,7 +104,7 @@ export default {
     },
     pageSearch (event) {
       // `this` inside methods points to the Vue instance
-      console.log('Hello ' + this.name + '!')
+      console.log('Hello ' + this.searchInput + '!')
       // `event` is the native DOM event
       console.log(event.target.tagName)
     }
