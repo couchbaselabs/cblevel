@@ -22,11 +22,11 @@
                   </div>
                   <!-- Message title and timestamp -->
                   <h4>
-                        Support Team
+                    Prod. Assortment Team
                     <small><i class="fa fa-clock-o"></i> 5 mins</small>
                   </h4>
                   <!-- The message -->
-                  <p>Why not buy a new awesome theme?</p>
+                  <p>July report needs pre-meeting scrub</p>
                 </a>
               </li>
               <!-- end message -->
@@ -52,7 +52,7 @@
             <ul class="menu">
               <li><!-- start notification -->
                 <a href="#">
-                  <i class="fa fa-users text-aqua"></i> 5 new members joined today
+                  <i class="fa fa-users text-aqua"></i> 5 team tasks completed today
                 </a>
               </li>
               <!-- end notification -->
@@ -78,7 +78,7 @@
                 <a href="#">
                   <!-- Task title and progress text -->
                   <h3>
-                        Design some buttons
+                    Design AB test results dashboard
                     <small class="pull-right">20%</small>
                   </h3>
                   <!-- The progress bar -->
@@ -112,23 +112,22 @@
           <!-- The user image in the menu -->
           <li class="user-header">
             <img src="static/lib/AdminLTE-2.3.6/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-
             <p>
-                  Peter Pierce - Web Developer
-              <small>Member since Nov. 2012</small>
+              Peter Pierce - Web Developer
+              <small>User since Nov. 2012</small>
             </p>
           </li>
           <!-- Menu Body -->
           <li class="user-body">
             <div class="row">
               <div class="col-xs-4 text-center">
-                <a href="#">Followers</a>
+                <a href="#">Roles</a>
               </div>
               <div class="col-xs-4 text-center">
-                <a href="#">Sales</a>
+                <a href="#">Pages</a>
               </div>
               <div class="col-xs-4 text-center">
-                <a href="#">Friends</a>
+                <a href="#">Tasks</a>
               </div>
             </div>
             <!-- /.row -->
