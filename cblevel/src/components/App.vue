@@ -49,6 +49,11 @@
             </router-link>
           </li>
         </template>
+        <li>
+          <a v-on:click="newPage">
+            <i class="fa fa-plus"></i> <span>NEW PAGE</span>
+          </a>
+        </li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -161,6 +166,12 @@
 <script>
 import BarTop from './BarTop'
 
+function makePage (descriptionIn) {
+  return {
+    description: descriptionIn || 'no page description yet'
+  }
+}
+
 export default {
   name: 'app',
   components: {
@@ -169,10 +180,15 @@ export default {
   data () {
     return {
       pages: {
-        'default': {
-          description: 'a starting page for you'
-        }
+        'default': makePage('a starting page for you')
       }
+    }
+  },
+  methods: {
+    newPage () {
+      var x = 1 + (this.pages.length || 0)
+      while (this.pages['page ' + x]) { x++ }
+      this.$set(this.pages, 'page ' + x, makePage())
     }
   }
 }
