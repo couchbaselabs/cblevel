@@ -62,6 +62,14 @@ export default {
     page_id () { return pageId(this) },
     page () { return this.pages[pageId(this)] }
   },
+  data () {
+    return {
+      searchInput: null,
+      searchCurrent: null,
+      searchResult: null,
+      searchErr: null
+    }
+  },
   methods: {
     pageRename (event) {
       var name = window.prompt('Rename Page\nPlease enter a page name:')
