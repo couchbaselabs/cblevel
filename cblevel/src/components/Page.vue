@@ -59,6 +59,11 @@
           search error: {{page.search.err}}
         </div>
 
+        <div v-if="page.search.result && page.search.result.hits.length <= 0"
+             class="box-body">
+          no results
+        </div>
+
         <div v-if="page.search.result && page.search.result.hits.length > 0"
              class="box-body table-responsive no-padding">
           <table class="table table-hover">
@@ -67,19 +72,16 @@
               <th>ID</th>
               <th>Shard</th>
               <th>Score</th>
+              <th>Fields</th>
             </tr>
             <tr v-for="x in page.search.result.hits">
               <td>{{x.id}}</td>
               <td>{{x.index}}</td>
               <td>{{x.score}}</td>
+              <td>{{x.fields | json}}</td>
             </tr>
             </tbody>
           </table>
-        </div>
-
-        <div v-if="page.search.result && page.search.result.hits.length <= 0"
-             class="box-body">
-          no results
         </div>
       </div>
     </section>
@@ -174,6 +176,7 @@ export default {
         type: 'POST',
         url: ds.url,
         data: JSON.stringify({
+          fields: ['*'],
           query: {query: page.search.input}
         }),
         contentType: 'application/json; charset=utf-8',
