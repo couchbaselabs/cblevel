@@ -26,7 +26,7 @@
 
     <!-- Page content -->
     <section class="content">
-      <div>
+      <form v-on:submit.prevent="pageSearch">
         <div class="input-group">
           <input type="text" name="q"
                  class="form-control" placeholder="Search..."/>
@@ -72,7 +72,7 @@ export default {
         }
         var namePrev = this.$route.params.page_id
         var page = this.pages[namePrev]
-        delete this.pages[namePrev]
+        this.$delete(this.pages, namePrev)
         this.pages[name] = page
 
         this.$router.push('/page/' + name)
@@ -92,7 +92,7 @@ export default {
     },
     pageDelete (event) {
       if (window.confirm('Are you sure you want to delete this page?')) {
-        delete this.pages[pageId(this)]
+        this.$delete(this.pages, pageId(this))
 
         for (var name in this.pages) {
           this.$router.push('/page/' + name)
