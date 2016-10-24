@@ -51,12 +51,16 @@
 </template>
 
 <script>
+function pageId ($this) {
+  return $this.$route.params.page_id
+}
+
 export default {
   name: 'page',
   props: ['pages'],
   computed: {
-    page_id () { return this.$route.params.page_id },
-    page () { return this.pages[this.$route.params.page_id] }
+    page_id () { return pageId(this) },
+    page () { return this.pages[pageId(this)] }
   },
   methods: {
     pageRename (event) {
@@ -79,16 +83,16 @@ export default {
         return 'clone of ' + name
       }
 
-      var pageName = cloneName(this.$route.params.page_id)
+      var pageName = cloneName(pageId(this))
       while (this.pages[cloneName]) { pageName = cloneName(pageName) }
       this.$set(this.pages, pageName,
-                JSON.parse(JSON.stringify(this.pages[this.$route.params.page_id])))
+                JSON.parse(JSON.stringify(this.pages[pageId(this)])))
 
       this.$router.push('/page/' + pageName)
     },
     pageDelete (event) {
       if (window.confirm('Are you sure you want to delete this page?')) {
-        delete this.pages[this.$route.params.page_id]
+        delete this.pages[pageId(this)]
 
         for (var name in this.pages) {
           this.$router.push('/page/' + name)
