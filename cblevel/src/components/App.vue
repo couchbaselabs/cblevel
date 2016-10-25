@@ -38,7 +38,7 @@
         <div class="pull-left info">
           <p>Couchbase Server</p>
           <!-- Status -->
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+          <a href="#"><i class="fa fa-circle text-success"></i> beer-sample</a>
         </div>
       </div>
 
@@ -110,7 +110,7 @@
               <i class="menu-icon fa fa-birthday-cake bg-red"></i>
 
               <div class="menu-info">
-                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
+                <h4 class="control-sidebar-subheading">cluster maintenance</h4>
                 <p>Will be 23 on April 24th</p>
               </div>
             </a>
@@ -123,7 +123,7 @@
           <li>
             <a href="javascript::;">
               <h4 class="control-sidebar-subheading">
-                Custom Template Design
+                sales-correlations rebuild
                 <span class="pull-right-container">
                   <span class="label label-danger pull-right">70%</span>
                 </span>
