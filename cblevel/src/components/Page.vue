@@ -43,6 +43,14 @@
       <div v-if="page.search.input" class="box">
         <div class="box-header">
           <h3 class="box-title">{{page.search.input}}</h3>
+
+          <span v-if="page.search.result"
+                class="pull-right-container">
+            <small class="label pull-right bg-green">
+              {{page.search.result.results.length}} of
+              {{page.search.result.resultsTotal}}
+            </small>
+          </span>
         </div>
         <!-- /.box-header -->
 
@@ -70,14 +78,10 @@
             <tbody>
             <tr>
               <th>ID</th>
-              <th>Shard</th>
-              <th>Score</th>
               <th>Fields</th>
             </tr>
             <tr v-for="x in page.search.result.results">
               <td>{{x.id}}</td>
-              <td>{{x.index}}</td>
-              <td>{{x.score}}</td>
               <td>{{x.fields}}</td>
             </tr>
             </tbody>
