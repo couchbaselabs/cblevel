@@ -59,12 +59,12 @@
           search error: {{page.search.err}}
         </div>
 
-        <div v-if="page.search.result && page.search.result.hits.length <= 0"
+        <div v-if="page.search.result && page.search.result.results.length <= 0"
              class="box-body">
           no results
         </div>
 
-        <div v-if="page.search.result && page.search.result.hits.length > 0"
+        <div v-if="page.search.result && page.search.result.results.length > 0"
              class="box-body table-responsive no-padding">
           <table class="table table-hover">
             <tbody>
@@ -74,22 +74,17 @@
               <th>Score</th>
               <th>Fields</th>
             </tr>
-            <tr v-for="x in page.search.result.hits">
+            <tr v-for="x in page.search.result.results">
               <td>{{x.id}}</td>
               <td>{{x.index}}</td>
               <td>{{x.score}}</td>
-              <td>{{x.fields | json}}</td>
+              <td>{{x.fields}}</td>
             </tr>
             </tbody>
           </table>
         </div>
       </div>
     </section>
-
-    <pre>
-      {{page_id}}
-      {{page}}
-    </pre>
   </div>
 
   <div v-else>
@@ -177,11 +172,16 @@ export default {
         url: ds.url,
         data: JSON.stringify({
           fields: ['*'],
-          query: {query: page.search.input}
+          query: {query: page.search.input},
+          size: 10000
         }),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
-        success: (data) => { page.search.result = data },
+        success: (data) => {
+          data.results = data.hits
+          data.resultsTotal = data.total_hits
+          page.search.result = data
+        },
         failure: (err) => { page.search.err = err }
       })
     }
