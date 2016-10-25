@@ -25,24 +25,27 @@
   <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
+      <!-- Sidebar dataSources -->
       <ul class="sidebar-menu">
         <li class="header">DATA SOURCES</li>
       </ul>
 
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel">
+      <div v-for="(ds, ds_id, ds_index) in dataSources"
+           class="dataSource-panel">
         <div class="pull-left image">
           <img src="static/media/couchbase-logo-solid.server.01.png"
-               class="img-circle" alt="User Image">
+               class="img-circle" :alt="ds.kind">
         </div>
         <div class="pull-left info">
-          <p>Couchbase Server</p>
-          <!-- Status -->
-          <a href="#"><i class="fa fa-circle text-success"></i> beer-sample</a>
+          <p>{{ds.kind}}</p>
+          <a href="#">
+            <i class="fa fa-circle text-success"></i>
+            {{ds.description}}
+          </a>
         </div>
       </div>
 
-      <!-- Sidebar Menu -->
+      <!-- Sidebar pages -->
       <ul class="sidebar-menu">
         <li class="header">PAGES</li>
         <template v-for="(page, page_id, page_index) in pages">
@@ -194,7 +197,9 @@ export default {
       },
       dataSources: {
         'default': {
-          url: '/api/index/bs0/query'
+          url: '/api/index/bs0/query',
+          kind: 'Couchbase',
+          description: 'FTS index / bs0'
         }
       }
     }
@@ -203,6 +208,7 @@ export default {
     newPage () {
       var x = 1 + (this.pages.length || 0)
       while (this.pages['page ' + x]) { x++ }
+
       var pageName = 'page ' + x
       this.$set(this.pages, pageName, makePage())
 
@@ -215,5 +221,47 @@ export default {
 <style>
 .sidebar-menu a.router-link-active {
   color: #fff;
+}
+
+.dataSource-panel {
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  overflow: hidden;
+}
+.dataSource-panel:before,
+.dataSource-panel:after {
+  content: " ";
+  display: table;
+}
+.dataSource-panel:after {
+  clear: both;
+}
+.dataSource-panel > .image > img {
+  width: 100%;
+  max-width: 45px;
+  height: auto;
+}
+.dataSource-panel > .info {
+  padding: 5px 5px 5px 15px;
+  line-height: 1;
+  position: absolute;
+  left: 55px;
+}
+.dataSource-panel > .info > p {
+  font-weight: 600;
+  margin-bottom: 9px;
+  color: #b8c7ce;
+}
+.dataSource-panel > .info > a {
+  text-decoration: none;
+  padding-right: 5px;
+  margin-top: 3px;
+  font-size: 11px;
+}
+.dataSource-panel > .info > a > .fa,
+.dataSource-panel > .info > a > .ion,
+.dataSource-panel > .info > a > .glyphicon {
+  margin-right: 3px;
 }
 </style>
