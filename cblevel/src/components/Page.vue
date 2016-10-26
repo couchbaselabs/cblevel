@@ -88,6 +88,8 @@
           </table>
         </div>
       </div>
+
+      <charts></charts>
     </section>
   </div>
 
@@ -100,12 +102,17 @@
 </template>
 
 <script>
+import Charts from './Charts'
+
 function pageId ($this) {
   return $this.$route.params.page_id
 }
 
 export default {
   name: 'page',
+  components: {
+    Charts
+  },
   props: ['pages', 'dataSources'],
   data () {
     return { searchInput: null }
