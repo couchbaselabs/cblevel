@@ -74,6 +74,11 @@
         </div>
 
         <div v-if="searchResult && searchResult.results.length > 0"
+             class="box-body">
+          <div>{{searchResult.analysis}}</div>
+        </div>
+
+        <div v-if="searchResult && searchResult.results.length > 0"
              class="box-body table-responsive no-padding">
           <table class="table table-hover">
             <tbody>
@@ -104,9 +109,39 @@
 
 <script>
 import Charts from './Charts'
+import Lazy from 'lazy.js'
 
 function pageId ($this) {
   return $this.$route.params.page_id
+}
+
+function analyzeResult (data) {
+  if (!data || !data.results || data.resultsTotal <= 0) {
+    return data
+  }
+
+  data.analysis = Lazy(data.results).reduce(analyzeResultObject, {})
+
+  return data
+}
+
+function analyzeResultObject (agg, result) {
+  return Lazy(result).keys().reduce(function (agg, key) {
+    agg.keyMetas = agg.keyMetas || {}
+
+    var keyMeta = agg.keyMetas[key] = agg.keyMetas[key] || {
+      typeCounts: {},
+      valCounts: {}
+    }
+
+    var val = result[key]
+    var valType = typeof val
+
+    keyMeta.typeCounts[valType] = (keyMeta.typeCounts[valType] || 0) + 1
+    keyMeta.valCounts[val] = (keyMeta.valCounts[val] || 0) + 1
+
+    return agg
+  }, agg)
 }
 
 export default {
@@ -206,10 +241,11 @@ export default {
         success: (data) => {
           data.results = data.hits
           data.resultsTotal = data.total_hits
+
           page.search.resultId = window.resultRegistryAdd(data)
           page.search.err = null
 
-          this.searchResult = JSON.parse(JSON.stringify(data))
+          this.searchResult = analyzeResult(JSON.parse(JSON.stringify(data)))
           this.searchErr = null
         },
         failure: (err) => {
