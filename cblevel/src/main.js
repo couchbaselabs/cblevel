@@ -33,7 +33,8 @@ window.makePage = function (descriptionIn) {
       request: null,
       resultId: null,
       err: null
-    }
+    },
+    panels: []
   }
 }
 

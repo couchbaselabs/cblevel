@@ -39,6 +39,11 @@
         </div>
       </form>
 
+      <template v-for="panel in page.panels">
+        <resultChart v-if="panel.panelKind == 'resultChart'"
+                     v-bind:options="panel.options"></resultChart>
+      </template>
+
       <resultTable v-bind:result="page.result"></resultTable>
     </section>
   </div>
@@ -55,6 +60,8 @@
 import Lazy from 'lazy.js'
 
 import moment from 'moment'
+
+import colorbrewer from 'colorbrewer'
 
 import ResultChart from './ResultChart'
 import ResultTable from './ResultTable'
@@ -122,6 +129,44 @@ function analyzeResultObject (agg, id, idNum, obj, keyPrefix) {
 
   return agg
 }
+
+function autoCreatePanels (data) {
+  var panels = []
+
+  Lazy(data.analysis && data.analysis.keyInfos).each(function (keyInfo, key) {
+    if (keyInfo.valTypeCountsSize !== 1) { // Check all the same type.
+      return
+    }
+
+    if (keyInfo.valToIdNumsSize <= 10) {
+      var labels = []
+      var data = []
+
+      Lazy(keyInfo.valToIdNums).each(function (idNums, val) {
+        labels.push(val)
+        data.push(idNums.length)
+      })
+
+      panels.push({
+        panelKind: 'resultChart',
+        options: {
+          type: 'doughnut',
+          data: {
+            labels: labels,
+            datasets: [{
+              data: data,
+              backgroundColor: colorbrewer.GnBu[9]
+            }]
+          }
+        }
+      })
+    }
+  })
+
+  return panels
+}
+
+// ------------------------------------------------------------
 
 export default {
   name: 'page',
@@ -217,6 +262,10 @@ export default {
 
           page.result.resultId = window.resultRegistryAdd(data)
           page.result.err = null
+
+          if (page.panels.length <= 0) {
+            page.panels = autoCreatePanels(data)
+          }
         },
         failure: (err) => {
           page.result.resultId = null
