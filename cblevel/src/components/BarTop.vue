@@ -22,11 +22,11 @@
                   </div>
                   <!-- Message title and timestamp -->
                   <h4>
-                    Prod. Assortment Team
+                    Development Team
                     <small><i class="fa fa-clock-o"></i> 5 mins</small>
                   </h4>
                   <!-- The message -->
-                  <p>July report needs pre-meeting scrub</p>
+                  <p>Connect report needs pre-meeting scrub</p>
                 </a>
               </li>
               <!-- end message -->
@@ -106,15 +106,15 @@
           <!-- The user image in the navbar-->
           <img src="static/lib/AdminLTE-2.3.6/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
           <!-- hidden-xs hides the username on small devices so only the image appears. -->
-          <span class="hidden-xs">Peter Pierce</span>
+          <span class="hidden-xs">Steve Yen</span>
         </a>
         <ul class="dropdown-menu">
           <!-- The user image in the menu -->
           <li class="user-header">
             <img src="static/lib/AdminLTE-2.3.6/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
             <p>
-              Peter Pierce - Web Developer
-              <small>User since Nov. 2012</small>
+              Steve Yen - technology
+              <small>since 1981</small>
             </p>
           </li>
           <!-- Menu Body -->
