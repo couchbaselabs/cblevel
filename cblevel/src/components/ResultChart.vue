@@ -7,8 +7,6 @@
 <script>
 import chartjs from 'chart.js'
 
-console.log(chartjs)
-
 function makeChart (chartEl) {
   var chart = new chartjs.Chart(chartEl, {
     type: 'bar',
@@ -50,10 +48,10 @@ function makeChart (chartEl) {
   console.log(chart)
 }
 
-window.nextChartId = 0
+window.nextChartId = 1
 
 export default {
-  name: 'charts',
+  name: 'resultChart',
   data () {
     return { elId: null }
   },

@@ -27,75 +27,19 @@
 
     <!-- Page content -->
     <section class="content">
-      <form v-on:submit.prevent="pageSearch">
+      <form v-on:submit.prevent="searchGo">
         <div class="input-group">
-          <input type="text" class="form-control"
-                 placeholder="Search..."
-                 v-model="searchInput"/>
+          <input v-model="searchInput"
+                 type="text" class="form-control" placeholder="search..."/>
           <span class="input-group-btn">
-            <button type="submit" class="btn btn-flat"
-                    v-on:click="pageSearch">
+            <button type="submit" class="btn btn-flat">
               <i class="fa fa-search"></i>
             </button>
           </span>
         </div>
       </form>
 
-      <div v-if="page.search.input" class="box">
-        <div class="box-header">
-          <h3 class="box-title">{{page.search.input}}</h3>
-
-          <span v-if="searchResult"
-                class="pull-right-container">
-            <small class="label pull-right bg-green">
-              {{searchResult.results.length}} of
-              {{searchResult.resultsTotal}}
-            </small>
-          </span>
-        </div>
-        <!-- /.box-header -->
-
-        <div v-if="!searchErr && !searchResult"
-             class="box-body">
-          <div class="overlay">
-            <i class="fa fa-refresh fa-spin"></i>
-          </div>
-        </div>
-
-        <div v-if="searchErr"
-             class="alert alert-error">
-          <h4><i class="icon fa fa-warning"></i> Error</h4>
-          search error: {{searchErr}}
-        </div>
-
-        <div v-if="searchResult && searchResult.results.length <= 0"
-             class="box-body">
-          no results
-        </div>
-
-        <div v-if="searchResult && searchResult.results.length > 0"
-             class="box-body">
-          <div>{{searchResult.analysis}}</div>
-        </div>
-
-        <div v-if="searchResult && searchResult.results.length > 0"
-             class="box-body table-responsive no-padding">
-          <table class="table table-hover">
-            <tbody>
-            <tr>
-              <th>ID</th>
-              <th>Fields</th>
-            </tr>
-            <tr v-for="x in searchResult.results">
-              <td>{{x.id}}</td>
-              <td>{{x.fields}}</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <charts></charts>
+      <resultTable v-bind:result="page.search"></resultTable>
     </section>
   </div>
 
@@ -112,7 +56,8 @@ import Lazy from 'lazy.js'
 
 import moment from 'moment'
 
-import Charts from './Charts'
+import ResultChart from './ResultChart'
+import ResultTable from './ResultTable'
 
 function pageId ($this) {
   return $this.$route.params.page_id
@@ -180,15 +125,11 @@ function analyzeResultObject (agg, id, idNum, obj, keyPrefix) {
 
 export default {
   name: 'page',
-  components: {
-    Charts
-  },
+  components: { ResultChart, ResultTable },
   props: ['pages', 'dataSources'],
   data () {
     return {
-      searchInput: null,
-      searchResult: null,
-      searchErr: null
+      searchInput: null // Ephemeral model for the search input control.
     }
   },
   computed: {
@@ -244,16 +185,12 @@ export default {
         this.$router.push('/')
       }
     },
-    pageSearch (event) {
+    searchGo (event) {
       var page = this.pages[pageId(this)]
 
       page.search.input = this.searchInput || ''
-
       page.search.resultId = null
       page.search.err = null
-
-      this.searchResult = null
-      this.searchErr = null
 
       var dsName = page.dataSourceName || 'default'
       var ds = this.dataSources[dsName]
@@ -276,18 +213,14 @@ export default {
           data.results = data.hits
           data.resultsTotal = data.total_hits
 
+          data = analyzeResults(data)
+
           page.search.resultId = window.resultRegistryAdd(data)
           page.search.err = null
-
-          this.searchResult = analyzeResults(JSON.parse(JSON.stringify(data)))
-          this.searchErr = null
         },
         failure: (err) => {
           page.search.resultId = null
           page.search.err = err
-
-          this.searchResult = null
-          this.searchErr = err
         }
       })
     }
