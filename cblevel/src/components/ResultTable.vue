@@ -33,7 +33,29 @@
     </div>
 
     <div v-if="result.resultId && results.results.length > 0"
-         class="box-body">
+         class="box-body no-padding">
+      <table v-if="results.analysis"
+             class="table">
+        <tbody>
+        <tr>
+          <th style="width: 10px">key</th>
+          <th>types</th>
+          <th>unique values</th>
+          <th>postings</th>
+        </tr>
+        <tr v-for="(keyInfo, key) in results.analysis.keyInfos">
+          <td>{{key}}</td>
+          <td class="box-body">
+            <div v-for="(count, valType) in keyInfo.valTypeCounts">
+               {{valType}}: {{count}}
+            </div>
+          </td>
+          <td>{{keyInfo.valToIdNumsSize}}</td>
+          <td>{{keyInfo.valToIdNums}}</td>
+        </tr>
+        </tbody>
+      </table>
+
       <div>{{results.analysis}}</div>
     </div>
 
