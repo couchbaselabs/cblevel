@@ -179,7 +179,7 @@ function makePage (descriptionIn) {
     dataSourceName: null,
     search: {
       input: null,
-      result: null,
+      resultId: null,
       err: null
     }
   }

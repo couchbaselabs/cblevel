@@ -17,6 +17,7 @@
           </a>
           <ul class="dropdown-menu">
             <li><a v-on:click="pageRename">Rename this page</a></li>
+            <li><a v-on:click="pageDescribe">Change this page's description</a></li>
             <li><a v-on:click="pageClone">Clone this page</a></li>
             <li><a v-on:click="pageDelete">Delete this page</a></li>
           </ul>
@@ -44,35 +45,35 @@
         <div class="box-header">
           <h3 class="box-title">{{page.search.input}}</h3>
 
-          <span v-if="page.search.result"
+          <span v-if="searchResult"
                 class="pull-right-container">
             <small class="label pull-right bg-green">
-              {{page.search.result.results.length}} of
-              {{page.search.result.resultsTotal}}
+              {{searchResult.results.length}} of
+              {{searchResult.resultsTotal}}
             </small>
           </span>
         </div>
         <!-- /.box-header -->
 
-        <div v-if="!page.search.err && !page.search.result"
+        <div v-if="!searchErr && !searchResult"
              class="box-body">
           <div class="overlay">
             <i class="fa fa-refresh fa-spin"></i>
           </div>
         </div>
 
-        <div v-if="page.search.err"
+        <div v-if="searchErr"
              class="alert alert-error">
           <h4><i class="icon fa fa-warning"></i> Error</h4>
-          search error: {{page.search.err}}
+          search error: {{searchErr}}
         </div>
 
-        <div v-if="page.search.result && page.search.result.results.length <= 0"
+        <div v-if="searchResult && searchResult.results.length <= 0"
              class="box-body">
           no results
         </div>
 
-        <div v-if="page.search.result && page.search.result.results.length > 0"
+        <div v-if="searchResult && searchResult.results.length > 0"
              class="box-body table-responsive no-padding">
           <table class="table table-hover">
             <tbody>
@@ -80,7 +81,7 @@
               <th>ID</th>
               <th>Fields</th>
             </tr>
-            <tr v-for="x in page.search.result.results">
+            <tr v-for="x in searchResult.results">
               <td>{{x.id}}</td>
               <td>{{x.fields}}</td>
             </tr>
@@ -115,7 +116,11 @@ export default {
   },
   props: ['pages', 'dataSources'],
   data () {
-    return { searchInput: null }
+    return {
+      searchInput: null,
+      searchResult: null,
+      searchErr: null
+    }
   },
   computed: {
     page_id () { return pageId(this) },
@@ -137,6 +142,12 @@ export default {
         this.$set(this.pages, nameNew, page)
 
         this.$router.push('/page/' + nameNew)
+      }
+    },
+    pageDescribe (event) {
+      var s = window.prompt('Please enter a page description:')
+      if (s) {
+        this.pages[this.$route.params.page_id].description = s
       }
     },
     pageClone (event) {
@@ -168,8 +179,12 @@ export default {
       var page = this.pages[pageId(this)]
 
       page.search.input = this.searchInput || ''
-      page.search.result = null
+
+      page.search.resultId = null
       page.search.err = null
+
+      this.searchResult = null
+      this.searchErr = null
 
       var dsName = page.dataSourceName || 'default'
       var ds = this.dataSources[dsName]
@@ -191,9 +206,19 @@ export default {
         success: (data) => {
           data.results = data.hits
           data.resultsTotal = data.total_hits
-          page.search.result = data
+          page.search.resultId = window.resultRegistryAdd(data)
+          page.search.err = null
+
+          this.searchResult = JSON.parse(JSON.stringify(data))
+          this.searchErr = null
         },
-        failure: (err) => { page.search.err = err }
+        failure: (err) => {
+          page.search.resultId = null
+          page.search.err = err
+
+          this.searchResult = null
+          this.searchErr = err
+        }
       })
     }
   }
@@ -214,7 +239,7 @@ export default {
   border-radius: 2px;
 }
 .content-header > .page-options .dropdown-menu {
-  margin-left: -6.5em;
+  margin-left: -10.5em;
 }
 .content-header > .page-options a {
   color: #444;

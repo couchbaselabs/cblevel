@@ -14,6 +14,17 @@ const router = new VueRouter({
   routes // short for routes: routes
 })
 
+window.nextResultRegistryId = 1
+
+window.resultRegistry = {}
+
+window.resultRegistryAdd = function (result) {
+  var resultId = window.nextResultRegistryId
+  window.nextResultRegistryId++
+  window.resultRegistry[resultId] = result
+  return resultId
+}
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
