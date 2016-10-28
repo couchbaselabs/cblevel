@@ -221,6 +221,11 @@ export default {
         }
       })
     }
+  },
+  watch: {
+    '$route' (to, from) {
+      this.searchInput = this.pages[pageId(this)].search.input
+    }
   }
 }
 </script>
