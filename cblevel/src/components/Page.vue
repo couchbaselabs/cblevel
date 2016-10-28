@@ -132,15 +132,17 @@ function analyzeResult (data) {
       agg.idToIdNums[id] = idNum
     }
 
-    return analyzeResultObject(agg, id, idNum, result.fields)
+    return analyzeResultObject(agg, id, idNum, result.fields, '')
   }, { keyInfos: {}, idToIdNums: {}, ids: [] })
 
   return data
 }
 
-function analyzeResultObject (agg, id, idNum, obj) {
+function analyzeResultObject (agg, id, idNum, obj, keyPrefix) {
   return Lazy(obj).keys().reduce(function (agg, key) {
     agg.keyInfos = agg.keyInfos || {}
+
+    key = keyPrefix + key
 
     var keyInfo = agg.keyInfos[key] = agg.keyInfos[key] || {
       valTypeCounts: {},
@@ -159,6 +161,10 @@ function analyzeResultObject (agg, id, idNum, obj) {
     }
 
     keyInfo.valTypeCounts[valType] = (keyInfo.valTypeCounts[valType] || 0) + 1
+
+    if (valType === 'object') {
+      analyzeResultObject(agg, id, idNum, val, key + '.')
+    }
 
     var postings = keyInfo.valToIdNums[val] || []
     postings.push(idNum)
