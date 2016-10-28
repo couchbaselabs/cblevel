@@ -118,7 +118,7 @@ function pageId ($this) {
   return $this.$route.params.page_id
 }
 
-function analyzeResult (data) {
+function analyzeResults (data) {
   if (!data || !data.results || data.resultsTotal <= 0) {
     return data
   }
@@ -139,17 +139,15 @@ function analyzeResult (data) {
 }
 
 function analyzeResultObject (agg, id, idNum, obj, keyPrefix) {
-  return Lazy(obj).keys().reduce(function (agg, key) {
-    agg.keyInfos = agg.keyInfos || {}
+  agg.keyInfos = agg.keyInfos || {}
 
+  Lazy(obj).each(function (val, key) {
     key = keyPrefix + key
 
     var keyInfo = agg.keyInfos[key] = agg.keyInfos[key] || {
       valTypeCounts: {},
       valToIdNums: {}
     }
-
-    var val = obj[key]
 
     var valType = typeof val
     if (valType === 'string') {
@@ -164,14 +162,15 @@ function analyzeResultObject (agg, id, idNum, obj, keyPrefix) {
 
     if (valType === 'object') {
       analyzeResultObject(agg, id, idNum, val, key + '.')
+      return
     }
 
     var postings = keyInfo.valToIdNums[val] || []
     postings.push(idNum)
     keyInfo.valToIdNums[val] = postings
+  })
 
-    return agg
-  }, agg)
+  return agg
 }
 
 export default {
@@ -275,7 +274,7 @@ export default {
           page.search.resultId = window.resultRegistryAdd(data)
           page.search.err = null
 
-          this.searchResult = analyzeResult(JSON.parse(JSON.stringify(data)))
+          this.searchResult = analyzeResults(JSON.parse(JSON.stringify(data)))
           this.searchErr = null
         },
         failure: (err) => {
