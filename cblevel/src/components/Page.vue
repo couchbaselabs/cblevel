@@ -135,6 +135,11 @@ function analyzeResults (data) {
     return analyzeResultObject(agg, id, idNum, result.fields, '')
   }, { keyInfos: {}, idToIdNums: {}, ids: [] })
 
+  Lazy(data.analysis.keyInfos).each(function (keyInfo, key) {
+    keyInfo.valTypeCountsSize = Lazy(keyInfo.valTypeCounts).size()
+    keyInfo.valToIdNumsSize = Lazy(keyInfo.valToIdNums).size()
+  })
+
   return data
 }
 
