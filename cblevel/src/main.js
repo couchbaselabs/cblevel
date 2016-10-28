@@ -25,6 +25,18 @@ window.resultRegistryAdd = function (result) {
   return resultId
 }
 
+window.makePage = function (descriptionIn) {
+  return {
+    description: descriptionIn || 'no page description yet',
+    dataSourceName: null,
+    result: {
+      request: null,
+      resultId: null,
+      err: null
+    }
+  }
+}
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
