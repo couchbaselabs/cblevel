@@ -24,7 +24,7 @@
     <div v-if="result.err"
          class="alert alert-error">
       <h4><i class="icon fa fa-warning"></i> Error</h4>
-      search error: {{result.err}}
+      request error: {{result.err}}
     </div>
 
     <div v-if="result.resultId && results.results.length <= 0"

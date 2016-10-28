@@ -30,7 +30,8 @@
       <form v-on:submit.prevent="searchGo">
         <div class="input-group">
           <input v-model="searchInput"
-                 type="text" class="form-control" placeholder="search..."/>
+                 type="text" class="form-control"
+                 placeholder="please enter a search..."/>
           <span class="input-group-btn">
             <button type="submit" class="btn btn-flat">
               <i class="fa fa-search"></i>
@@ -39,10 +40,15 @@
         </div>
       </form>
 
-      <template v-for="panel in page.panels">
+      <div v-for="panel in page.panels"
+           class="box">
+        <div class="box-header">
+          <h4 class="box-title">{{panel.panelLabel}}</h4>
+        </div>
+
         <resultChart v-if="panel.panelKind == 'resultChart'"
                      v-bind:options="panel.options"></resultChart>
-      </template>
+      </div>
 
       <resultTable v-bind:result="page.result"></resultTable>
     </section>
@@ -148,6 +154,7 @@ function autoCreatePanels (data) {
       })
 
       panels.push({
+        panelLabel: key,
         panelKind: 'resultChart',
         options: {
           type: 'doughnut',
