@@ -1,8 +1,8 @@
 <template>
 <div>
-  <div v-if="result.input" class="box">
+  <div v-if="result.request" class="box">
     <div class="box-header">
-      <h3 class="box-title">{{result.input}}</h3>
+      <h3 class="box-title">{{result.request}}</h3>
 
       <span v-if="result.resultId"
             class="pull-right-container">

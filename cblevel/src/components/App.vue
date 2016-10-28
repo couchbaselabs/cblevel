@@ -177,8 +177,8 @@ function makePage (descriptionIn) {
   return {
     description: descriptionIn || 'no page description yet',
     dataSourceName: null,
-    search: {
-      input: null,
+    result: {
+      request: null,
       resultId: null,
       err: null
     }

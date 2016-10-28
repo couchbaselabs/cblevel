@@ -39,7 +39,7 @@
         </div>
       </form>
 
-      <resultTable v-bind:result="page.search"></resultTable>
+      <resultTable v-bind:result="page.result"></resultTable>
     </section>
   </div>
 
@@ -188,9 +188,9 @@ export default {
     searchGo (event) {
       var page = this.pages[pageId(this)]
 
-      page.search.input = this.searchInput || ''
-      page.search.resultId = null
-      page.search.err = null
+      page.result.request = this.searchInput || ''
+      page.result.resultId = null
+      page.result.err = null
 
       var dsName = page.dataSourceName || 'default'
       var ds = this.dataSources[dsName]
@@ -204,7 +204,7 @@ export default {
         url: ds.url,
         data: JSON.stringify({
           fields: ['*'],
-          query: {query: page.search.input},
+          query: {query: page.result.request},
           size: 10000
         }),
         contentType: 'application/json; charset=utf-8',
@@ -215,19 +215,22 @@ export default {
 
           data = analyzeResults(data)
 
-          page.search.resultId = window.resultRegistryAdd(data)
-          page.search.err = null
+          page.result.resultId = window.resultRegistryAdd(data)
+          page.result.err = null
         },
         failure: (err) => {
-          page.search.resultId = null
-          page.search.err = err
+          page.result.resultId = null
+          page.result.err = err
         }
       })
     }
   },
   watch: {
     '$route' (to, from) {
-      this.searchInput = this.pages[pageId(this)].search.input
+      var page = this.pages[pageId(this)]
+      if (page && page.result) {
+        this.searchInput = page.result.request
+      }
     }
   }
 }
