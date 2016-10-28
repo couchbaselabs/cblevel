@@ -9,8 +9,8 @@ import chartjs from 'chart.js'
 
 console.log(chartjs)
 
-function makeCharts (ctx) {
-  var myChart = new chartjs.Chart(ctx, {
+function makeChart (chartEl) {
+  var chart = new chartjs.Chart(chartEl, {
     type: 'bar',
     data: {
       labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
@@ -46,14 +46,25 @@ function makeCharts (ctx) {
       }
     }
   })
-  console.log(myChart)
+
+  console.log(chart)
 }
+
+window.nextChartId = 0
 
 export default {
   name: 'charts',
+  data () {
+    return { elId: null }
+  },
   mounted () {
-    console.log(this.$el)
-    makeCharts(this.$el.firstElementChild)
+    var chartElId = 'chart_' + window.nextChartId
+    window.nextChartId++
+
+    var chartEl = this.$el.firstElementChild
+    chartEl.id = chartElId
+
+    makeChart(chartEl)
   }
 }
 </script>
