@@ -124,14 +124,22 @@ function analyzeResult (data) {
   }
 
   data.analysis = Lazy(data.results).reduce(function (agg, result) {
-    return analyzeResultObject(agg, result.fields)
-  }, {})
+    var id = result.id
+    var idNum = agg.idToIdNums[id]
+    if (idNum === undefined) {
+      idNum = agg.ids.length
+      agg.ids.push(id)
+      agg.idToIdNums[id] = idNum
+    }
+
+    return analyzeResultObject(agg, id, idNum, result.fields)
+  }, { keyMetas: {}, idToIdNums: {}, ids: [] })
 
   return data
 }
 
-function analyzeResultObject (agg, result) {
-  return Lazy(result).keys().reduce(function (agg, key) {
+function analyzeResultObject (agg, id, idNum, obj) {
+  return Lazy(obj).keys().reduce(function (agg, key) {
     agg.keyMetas = agg.keyMetas || {}
 
     var keyMeta = agg.keyMetas[key] = agg.keyMetas[key] || {
@@ -139,7 +147,7 @@ function analyzeResultObject (agg, result) {
       valCounts: {}
     }
 
-    var val = result[key]
+    var val = obj[key]
 
     var valType = typeof val
     if (valType === 'string') {
