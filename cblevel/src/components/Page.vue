@@ -133,18 +133,18 @@ function analyzeResult (data) {
     }
 
     return analyzeResultObject(agg, id, idNum, result.fields)
-  }, { keyMetas: {}, idToIdNums: {}, ids: [] })
+  }, { keyInfos: {}, idToIdNums: {}, ids: [] })
 
   return data
 }
 
 function analyzeResultObject (agg, id, idNum, obj) {
   return Lazy(obj).keys().reduce(function (agg, key) {
-    agg.keyMetas = agg.keyMetas || {}
+    agg.keyInfos = agg.keyInfos || {}
 
-    var keyMeta = agg.keyMetas[key] = agg.keyMetas[key] || {
-      typeCounts: {},
-      valCounts: {}
+    var keyInfo = agg.keyInfos[key] = agg.keyInfos[key] || {
+      valTypeCounts: {},
+      valToIdNums: {}
     }
 
     var val = obj[key]
@@ -158,8 +158,11 @@ function analyzeResultObject (agg, id, idNum, obj) {
       }
     }
 
-    keyMeta.typeCounts[valType] = (keyMeta.typeCounts[valType] || 0) + 1
-    keyMeta.valCounts[val] = (keyMeta.valCounts[val] || 0) + 1
+    keyInfo.valTypeCounts[valType] = (keyInfo.valTypeCounts[valType] || 0) + 1
+
+    var postings = keyInfo.valToIdNums[val] || []
+    postings.push(idNum)
+    keyInfo.valToIdNums[val] = postings
 
     return agg
   }, agg)
