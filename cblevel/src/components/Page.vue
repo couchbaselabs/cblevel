@@ -108,8 +108,11 @@
 </template>
 
 <script>
-import Charts from './Charts'
 import Lazy from 'lazy.js'
+
+import moment from 'moment'
+
+import Charts from './Charts'
 
 function pageId ($this) {
   return $this.$route.params.page_id
@@ -120,7 +123,9 @@ function analyzeResult (data) {
     return data
   }
 
-  data.analysis = Lazy(data.results).reduce(analyzeResultObject, {})
+  data.analysis = Lazy(data.results).reduce(function (agg, result) {
+    return analyzeResultObject(agg, result.fields)
+  }, {})
 
   return data
 }
@@ -135,7 +140,15 @@ function analyzeResultObject (agg, result) {
     }
 
     var val = result[key]
+
     var valType = typeof val
+    if (valType === 'string') {
+      var t = moment(val, moment.ISO_8601)
+      if (t.isValid()) {
+        val = t.format()
+        valType = 'string.datetime'
+      }
+    }
 
     keyMeta.typeCounts[valType] = (keyMeta.typeCounts[valType] || 0) + 1
     keyMeta.valCounts[val] = (keyMeta.valCounts[val] || 0) + 1
