@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div>
     <canvas></canvas>
   </div>
 </template>
@@ -25,11 +25,16 @@ export default {
 
     var chartEl = this.$el.firstElementChild
     chartEl.id = chartElId
+    chartEl.className = 'chart_' + this.options.type
 
     makeChart(chartEl, this.options)
   }
 }
 </script>
 
-<style scoped>
+<style>
+.chart_doughnut {
+  min-width: 100px;
+  min-height: 100px;
+}
 </style>

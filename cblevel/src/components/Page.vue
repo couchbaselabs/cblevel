@@ -42,10 +42,25 @@
 
       <resultTable v-bind:result="page.result"></resultTable>
 
-      <div v-for="panel in page.panels"
-           class="box">
-        <div class="box-header">
+      <div v-for="panel in page.panels">
+        <div v-if="panel.panelLabel">
           <h4 class="box-title">{{panel.panelLabel}}</h4>
+        </div>
+
+        <div v-if="panel.panels"
+             class="row">
+          <div v-for="subPanel in panel.panels"
+               class="col-lg-3 col-xs-6">
+            <div class="box">
+              <div v-if="subPanel.panelLabel"
+                   class="box-header">
+                <h4 class="box-title">{{subPanel.panelLabel}}</h4>
+              </div>
+
+              <resultChart v-if="subPanel.panelKind == 'resultChart'"
+                           v-bind:options="subPanel.options"></resultChart>
+            </div>
+          </div>
         </div>
 
         <resultChart v-if="panel.panelKind == 'resultChart'"
@@ -139,22 +154,33 @@ function analyzeResultObject (agg, id, idNum, obj, keyPrefix) {
 function autoCreatePanels (data) {
   var panels = []
 
+  var subPanels = []
+
   Lazy(data.analysis && data.analysis.keyInfos).each(function (keyInfo, key) {
     if (keyInfo.valTypeCountsSize !== 1) { // Check all the same type.
       return
     }
 
     if (keyInfo.valToIdNumsSize <= 10) {
+      var labelMaxLength = 0
       var labels = []
       var data = []
 
       Lazy(keyInfo.valToIdNums).each(function (idNums, val) {
+        if (labelMaxLength < ('' + val).length) {
+          labelMaxLength = ('' + val).length
+        }
+
         labels.push(val)
         data.push(idNums.length)
       })
 
-      panels.push({
-        panelLabel: key,
+      if (labelMaxLength > 20) {
+        return
+      }
+
+      subPanels.push({
+        panelLabel: 'field: ' + key,
         panelKind: 'resultChart',
         options: {
           type: 'doughnut',
@@ -165,10 +191,26 @@ function autoCreatePanels (data) {
               backgroundColor: colorbrewer.GnBu[9]
             }]
           }
-        }
+        },
+        panels: null
       })
+
+      if (subPanels.length >= 4) {
+        panels.push({
+          panelKind: 'panel',
+          panels: subPanels
+        })
+        subPanels = []
+      }
     }
   })
+
+  if (subPanels.length > 0) {
+    panels.push({
+      panelKind: 'panel',
+      panels: subPanels
+    })
+  }
 
   return panels
 }
