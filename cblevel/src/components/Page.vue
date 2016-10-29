@@ -325,6 +325,8 @@ export default {
     searchGo (event) {
       var page = this.pages[pageId(this)]
 
+      delete window.resultRegistry[page.result.resultId]
+
       page.result.request = this.searchInput || ''
       page.result.resultId = null
       page.result.err = null
