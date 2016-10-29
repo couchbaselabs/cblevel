@@ -41,9 +41,9 @@
           <th>Doc ID</th>
           <th>Fields</th>
         </tr>
-        <tr v-for="(x, idx) in results.results"
-            v-bind:id="'docNum_'+idx">
-          <td>{{idx}}</td>
+        <tr v-for="(x, docNum) in results.results"
+            v-bind:id="'docNum_'+docNum">
+          <td>#{{docNum}}:</td>
           <td>{{x.id}}</td>
           <td>{{x.fields}}</td>
         </tr>
