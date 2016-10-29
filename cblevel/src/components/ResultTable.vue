@@ -37,10 +37,12 @@
       <table class="table table-hover">
         <tbody>
         <tr>
+          <th>#</th>
           <th>ID</th>
           <th>Fields</th>
         </tr>
-        <tr v-for="x in results.results">
+        <tr v-for="(x, idx) in results.results">
+          <td>{{idx}}</td>
           <td>{{x.id}}</td>
           <td>{{x.fields}}</td>
         </tr>
