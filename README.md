@@ -17,6 +17,10 @@ Next, in your Couchbase Server, create an FTS index with...
 
 The default mapping in your FTS index should also be dynamic=true.
 
+Next, use npm install to bring in all the dependencies...
+
+    npm install
+
 Next, start the cblevel nodeJS server, like...
 
     npm run dev
