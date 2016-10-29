@@ -139,6 +139,20 @@ function analyzeResultObject (agg, id, idNum, obj, keyPrefix) {
       }
     }
 
+    if (key.endsWith('lat')) {
+      var lon = obj[key.substring(0, key.length - 3) + 'lon']
+      if (lon) {
+        valType = 'object.latlon'
+        val = [val, lon]
+      }
+    } else if (key.endsWith('lon')) {
+      var lat = obj[key.substring(0, key.length - 3) + 'lat']
+      if (lat) {
+        valType = 'object.latlon'
+        val = [lat, val]
+      }
+    }
+
     keyInfo.valTypeCounts[valType] = (keyInfo.valTypeCounts[valType] || 0) + 1
 
     if (valType === 'object') {
@@ -161,6 +175,10 @@ function autoCreatePanels (data) {
 
   Lazy(data.analysis && data.analysis.keyInfos).each(function (keyInfo, key) {
     if (keyInfo.valTypeCountsSize !== 1) { // Check all the same type.
+      return
+    }
+
+    if (keyInfo.valTypeCounts['object.latlon'] > 0) {
       return
     }
 
