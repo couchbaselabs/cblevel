@@ -43,10 +43,6 @@
       <resultTable v-bind:result="page.result"></resultTable>
 
       <div v-for="panel in page.panels">
-        <div v-if="panel.panelLabel">
-          <h4 class="box-title">{{panel.panelLabel}}</h4>
-        </div>
-
         <div v-if="panel.panels"
              class="row">
           <div v-for="subPanel in panel.panels"
@@ -63,8 +59,15 @@
           </div>
         </div>
 
-        <resultChart v-if="panel.panelKind == 'resultChart'"
-                     v-bind:options="panel.options"></resultChart>
+        <div v-else class="box">
+          <div v-if="panel.panelLabel"
+               class="box-header">
+            <h4 class="box-title">{{panel.panelLabel}}</h4>
+          </div>
+
+          <resultChart v-if="panel.panelKind == 'resultChart'"
+                       v-bind:options="panel.options"></resultChart>
+        </div>
       </div>
     </section>
   </div>
@@ -161,24 +164,46 @@ function autoCreatePanels (data) {
       return
     }
 
-    if (keyInfo.valToIdNumsSize <= 10) {
-      var labelMaxLength = 0
-      var labels = []
-      var data = []
+    var labelMaxLength = 0
+    var labels = []
+    var data = []
 
-      Lazy(keyInfo.valToIdNums).each(function (idNums, val) {
-        if (labelMaxLength < ('' + val).length) {
-          labelMaxLength = ('' + val).length
-        }
-
-        labels.push(val)
-        data.push(idNums.length)
-      })
-
-      if (labelMaxLength > 20) {
-        return
+    Lazy(keyInfo.valToIdNums).each(function (idNums, val) {
+      if (labelMaxLength < ('' + val).length) {
+        labelMaxLength = ('' + val).length
       }
 
+      labels.push(val)
+      data.push(idNums.length)
+    })
+
+    if (labelMaxLength > 20) {
+      return
+    }
+
+    var backgroundColor = []
+    for (var i = 0; i < labels.length; i++) {
+      backgroundColor[i] = colorbrewer.GnBu[9][i % 9]
+    }
+
+    if (keyInfo.valToIdNumsSize >= 10) {
+      panels.unshift({
+        panelLabel: 'field: ' + key,
+        panelKind: 'resultChart',
+        options: {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'count',
+              data: data,
+              backgroundColor: backgroundColor
+            }]
+          }
+        },
+        panels: null
+      })
+    } else {
       subPanels.push({
         panelLabel: 'field: ' + key,
         panelKind: 'resultChart',
@@ -188,7 +213,7 @@ function autoCreatePanels (data) {
             labels: labels,
             datasets: [{
               data: data,
-              backgroundColor: colorbrewer.GnBu[9]
+              backgroundColor: backgroundColor
             }]
           }
         },

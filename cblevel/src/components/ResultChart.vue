@@ -37,4 +37,8 @@ export default {
   min-width: 100px;
   min-height: 100px;
 }
+
+.chart_bar {
+  max-height: 300px;
+}
 </style>
