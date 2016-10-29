@@ -40,6 +40,8 @@
         </div>
       </form>
 
+      <resultTable v-bind:result="page.result"></resultTable>
+
       <div v-for="panel in page.panels"
            class="box">
         <div class="box-header">
@@ -49,8 +51,6 @@
         <resultChart v-if="panel.panelKind == 'resultChart'"
                      v-bind:options="panel.options"></resultChart>
       </div>
-
-      <resultTable v-bind:result="page.result"></resultTable>
     </section>
   </div>
 

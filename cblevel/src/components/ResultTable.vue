@@ -33,7 +33,25 @@
     </div>
 
     <div v-if="result.resultId && results.results.length > 0"
-         class="box-body no-padding">
+         class="box-body table-responsive no-padding resultTable">
+      <table class="table table-hover">
+        <tbody>
+        <tr>
+          <th>ID</th>
+          <th>Fields</th>
+        </tr>
+        <tr v-for="x in results.results">
+          <td>{{x.id}}</td>
+          <td>{{x.fields}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div v-if="result.resultId && results.results.length > 0"
+       class="box">
+    <div class="box-body no-padding resultTable">
       <table v-if="results.analysis"
              class="table">
         <tbody>
@@ -55,24 +73,6 @@
         </tr>
         </tbody>
       </table>
-
-      <div>{{results.analysis}}</div>
-    </div>
-
-    <div v-if="result.resultId && results.results.length > 0"
-         class="box-body table-responsive no-padding">
-      <table class="table table-hover">
-        <tbody>
-        <tr>
-          <th>ID</th>
-          <th>Fields</th>
-        </tr>
-        <tr v-for="x in results.results">
-          <td>{{x.id}}</td>
-          <td>{{x.fields}}</td>
-        </tr>
-        </tbody>
-      </table>
     </div>
   </div>
 </div>
@@ -91,4 +91,8 @@ export default {
 </script>
 
 <style scoped>
+.resultTable {
+  max-height: 30em;
+  overflow: auto;
+}
 </style>
