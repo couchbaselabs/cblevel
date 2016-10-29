@@ -31,12 +31,7 @@ export default {
 
     makeChart(chartEl, this.options)
   },
-  updated () {
-    console.log('resultChart updated')
-  },
   beforeDestroy () {
-    console.log('resultChart beforeDestroy')
-
     var chartEl = this.$el.firstElementChild
     var chart = window.chartRegistry[chartEl.id]
     if (chart) {

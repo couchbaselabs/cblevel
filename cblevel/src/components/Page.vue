@@ -125,8 +125,6 @@ function analyzeResultObject (agg, id, idNum, obj, keyPrefix) {
   agg.keyInfos = agg.keyInfos || {}
 
   Lazy(obj).each(function (val, key) {
-    console.log(keyPrefix, key, val, obj instanceof Array)
-
     if (obj instanceof Array) {
       key = keyPrefix
     } else {
