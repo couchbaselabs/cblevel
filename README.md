@@ -17,6 +17,10 @@ Next, in your Couchbase Server, create an FTS index with...
 
 The default mapping in your FTS index should also be dynamic=true.
 
+Next, start the cblevel nodeJS server, like...
+
+    npm run dev
+
 Finally, in your web browser, visit...
 
     http://localhost:8080/#/page/default?indexName=$YOUR_FTS_INDEX_NAME
