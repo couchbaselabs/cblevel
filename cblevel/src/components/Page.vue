@@ -164,7 +164,7 @@ function analyzeResultObject (agg, id, idNum, obj, keyPrefix) {
 
     keyInfo.valTypeCounts[valType] = (keyInfo.valTypeCounts[valType] || 0) + 1
 
-    if (valType === 'object') { // Handle both Object and Array cases.
+    if (valType === 'object') {
       analyzeResultObject(agg, id, idNum, val, key + '.')
       return
     }
