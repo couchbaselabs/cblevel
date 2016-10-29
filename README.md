@@ -4,7 +4,7 @@ Setup instructions...
 
     git clone https://github.com/couchbaselabs/cblevel.git
 
-    cd cblevel
+    cd cblevel/cblevel
 
 Next, edit the config/index.js => 'dev' => 'proxyTable' entry to point
 to your Couchbase Server's FTS port.  For example, the FTS port will
