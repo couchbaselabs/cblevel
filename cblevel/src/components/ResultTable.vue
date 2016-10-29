@@ -38,7 +38,7 @@
         <tbody>
         <tr>
           <th>#</th>
-          <th>ID</th>
+          <th>Doc ID</th>
           <th>Fields</th>
         </tr>
         <tr v-for="(x, idx) in results.results">
@@ -58,10 +58,10 @@
              class="table">
         <tbody>
         <tr>
-          <th style="width: 10px">key</th>
-          <th>types</th>
-          <th>unique values</th>
-          <th>postings</th>
+          <th style="width: 10px">Field</th>
+          <th>Type Counts</th>
+          <th>#&nbsp;Unique Values</th>
+          <th>Value Postings</th>
         </tr>
         <tr v-for="(keyInfo, key) in results.analysis.keyInfos">
           <td>{{key}}</td>
