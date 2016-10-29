@@ -125,7 +125,13 @@ function analyzeResultObject (agg, id, idNum, obj, keyPrefix) {
   agg.keyInfos = agg.keyInfos || {}
 
   Lazy(obj).each(function (val, key) {
-    key = keyPrefix + key
+    console.log(keyPrefix, key, val, obj instanceof Array)
+
+    if (obj instanceof Array) {
+      key = keyPrefix
+    } else {
+      key = keyPrefix + key
+    }
 
     var keyInfo = agg.keyInfos[key] = agg.keyInfos[key] || {
       valTypeCounts: {},
@@ -144,18 +150,23 @@ function analyzeResultObject (agg, id, idNum, obj, keyPrefix) {
     if (key.endsWith('lat')) {
       var lon = obj[key.substring(0, key.length - 3) + 'lon']
       if (lon && valType === typeof lon) {
-        valType = valType + '.latlon'
+        valType = valType + '.lat'
       }
     } else if (key.endsWith('lon')) {
       var lat = obj[key.substring(0, key.length - 3) + 'lat']
       if (lat && valType === typeof lat) {
-        valType = valType + '.latlon'
+        valType = valType + '.lon'
       }
+    }
+
+    if (valType === 'object' && val instanceof Array) {
+      analyzeResultObject(agg, id, idNum, val, key + '[]')
+      return
     }
 
     keyInfo.valTypeCounts[valType] = (keyInfo.valTypeCounts[valType] || 0) + 1
 
-    if (valType === 'object') {
+    if (valType === 'object') { // Handle both Object and Array cases.
       analyzeResultObject(agg, id, idNum, val, key + '.')
       return
     }
