@@ -94,6 +94,8 @@ function pageId ($this) {
   return $this.$route.params.page_id
 }
 
+// ------------------------------------------------------------
+
 function analyzeResults (data) {
   if (!data || !data.results || data.resultsTotal <= 0) {
     return data
@@ -141,15 +143,13 @@ function analyzeResultObject (agg, id, idNum, obj, keyPrefix) {
 
     if (key.endsWith('lat')) {
       var lon = obj[key.substring(0, key.length - 3) + 'lon']
-      if (lon) {
-        valType = 'object.latlon'
-        val = [val, lon]
+      if (lon && valType === typeof lon) {
+        valType = valType + '.latlon'
       }
     } else if (key.endsWith('lon')) {
       var lat = obj[key.substring(0, key.length - 3) + 'lat']
-      if (lat) {
-        valType = 'object.latlon'
-        val = [lat, val]
+      if (lat && valType === typeof lat) {
+        valType = valType + '.latlon'
       }
     }
 
@@ -167,6 +167,8 @@ function analyzeResultObject (agg, id, idNum, obj, keyPrefix) {
 
   return agg
 }
+
+// ------------------------------------------------------------
 
 function autoCreatePanels (data) {
   var panels = []

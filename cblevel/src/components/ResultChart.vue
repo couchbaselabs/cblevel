@@ -7,8 +7,10 @@
 <script>
 import chartjs from 'chart.js'
 
+window.chartRegistry = {}
+
 function makeChart (chartEl, options) {
-  return new chartjs.Chart(chartEl, options)
+  window.chartRegistry[chartEl.id] = new chartjs.Chart(chartEl, options)
 }
 
 window.nextChartId = 1
@@ -28,6 +30,19 @@ export default {
     chartEl.className = 'chart_' + this.options.type
 
     makeChart(chartEl, this.options)
+  },
+  updated () {
+    console.log('resultChart updated')
+  },
+  beforeDestroy () {
+    console.log('resultChart beforeDestroy')
+
+    var chartEl = this.$el.firstElementChild
+    var chart = window.chartRegistry[chartEl.id]
+    if (chart) {
+      chart.destroy()
+      delete window.chartRegistry[chartEl.id]
+    }
   }
 }
 </script>
