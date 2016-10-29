@@ -69,7 +69,7 @@
             </div>
           </td>
           <td>{{keyInfo.valToIdNumsSize}}</td>
-          <td>{{keyInfo.valToIdNums}}</td>
+          <td><div class="postings">{{keyInfo.valToIdNums}}</div></td>
         </tr>
         </tbody>
       </table>
@@ -93,6 +93,10 @@ export default {
 <style scoped>
 .resultTable {
   max-height: 30em;
+  overflow: auto;
+}
+.resultTable td .postings {
+  max-height: 20em;
   overflow: auto;
 }
 </style>
