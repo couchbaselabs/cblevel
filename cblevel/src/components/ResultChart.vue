@@ -5,12 +5,51 @@
 </template>
 
 <script>
+import Lazy from 'lazy.js'
+
+import colorbrewer from 'colorbrewer'
+
 import chartjs from 'chart.js'
 
 window.chartRegistry = {}
 
 function makeChart (chartEl, options) {
-  window.chartRegistry[chartEl.id] = new chartjs.Chart(chartEl, options)
+  var result = window.resultRegistry[options.resultId]
+  if (!result || !result.analysis || !result.analysis.keyInfos) {
+    return
+  }
+
+  var keyInfo = result.analysis.keyInfos[options.key]
+  if (!keyInfo || !keyInfo.valToIdNums) {
+    return
+  }
+
+  var labels = []
+  var data = []
+
+  Lazy(keyInfo.valToIdNums).each(function (idNums, val) {
+    labels.push(val)
+    data.push(idNums.length)
+  })
+
+  var backgroundColor = []
+  for (var i = 0; i < labels.length; i++) {
+    backgroundColor[i] = colorbrewer.GnBu[9][i % 9]
+  }
+
+  var chartOptions = {
+    type: options.resultChartType,
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'count',
+        data: data,
+        backgroundColor: backgroundColor
+      }]
+    }
+  }
+
+  window.chartRegistry[chartEl.id] = new chartjs.Chart(chartEl, chartOptions)
 }
 
 window.nextChartId = 1

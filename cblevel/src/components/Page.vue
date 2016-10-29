@@ -85,8 +85,6 @@ import Lazy from 'lazy.js'
 
 import moment from 'moment'
 
-import colorbrewer from 'colorbrewer'
-
 import ResultChart from './ResultChart'
 import ResultTable from './ResultTable'
 
@@ -179,7 +177,7 @@ function analyzeResultObject (agg, id, idNum, obj, keyPrefix) {
 
 // ------------------------------------------------------------
 
-function autoCreatePanels (data) {
+function autoCreatePanels (resultId, data) {
   var panels = []
 
   var subPanels = []
@@ -189,30 +187,18 @@ function autoCreatePanels (data) {
       return
     }
 
-    if (keyInfo.valTypeCounts['object.latlon'] > 0) {
+    if (keyInfo.valTypeCounts['number.lat'] > 0 ||
+        keyInfo.valTypeCounts['number.lon'] > 0) {
       return
     }
 
     var labelMaxLength = 0
-    var labels = []
-    var data = []
-
     Lazy(keyInfo.valToIdNums).each(function (idNums, val) {
-      if (labelMaxLength < ('' + val).length) {
-        labelMaxLength = ('' + val).length
-      }
-
-      labels.push(val)
-      data.push(idNums.length)
+      var n = ('' + val).length
+      labelMaxLength = labelMaxLength > n ? labelMaxLength : n
     })
-
     if (labelMaxLength > 20) {
       return
-    }
-
-    var backgroundColor = []
-    for (var i = 0; i < labels.length; i++) {
-      backgroundColor[i] = colorbrewer.GnBu[9][i % 9]
     }
 
     if (keyInfo.valToIdNumsSize >= 10) {
@@ -220,15 +206,9 @@ function autoCreatePanels (data) {
         panelLabel: 'field: ' + key,
         panelKind: 'resultChart',
         options: {
-          type: 'bar',
-          data: {
-            labels: labels,
-            datasets: [{
-              label: 'count',
-              data: data,
-              backgroundColor: backgroundColor
-            }]
-          }
+          resultChartType: 'bar',
+          resultId: resultId,
+          key: key
         },
         panels: null
       })
@@ -237,14 +217,9 @@ function autoCreatePanels (data) {
         panelLabel: 'field: ' + key,
         panelKind: 'resultChart',
         options: {
-          type: 'doughnut',
-          data: {
-            labels: labels,
-            datasets: [{
-              data: data,
-              backgroundColor: backgroundColor
-            }]
-          }
+          resultChartType: 'doughnut',
+          resultId: resultId,
+          key: key
         },
         panels: null
       })
@@ -368,7 +343,7 @@ export default {
 
           page.result.resultId = window.resultRegistryAdd(data)
           page.result.err = null
-          page.panels = autoCreatePanels(data)
+          page.panels = autoCreatePanels(page.result.resultId, data)
         },
         failure: (err) => {
           page.result.resultId = null
