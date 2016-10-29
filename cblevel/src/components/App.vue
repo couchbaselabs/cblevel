@@ -64,11 +64,7 @@ export default {
         'default': window.makePage('a starting page for you')
       },
       dataSources: {
-        'default': {
-          url: '/api/index/bs0/query',
-          kind: 'Couchbase',
-          description: 'FTS index / bs0'
-        }
+        'default': window.makeDataSource()
       }
     }
   }
