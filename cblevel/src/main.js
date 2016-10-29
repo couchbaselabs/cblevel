@@ -38,27 +38,43 @@ window.makePage = function (descriptionIn) {
   }
 }
 
-window.locationHashStart = window.location.hash || ''
+window.makeDataSource = function (kind, sourceName) {
+  return window.dataSourceKinds[kind || 'Couchbase FTS'].factory(sourceName)
+}
 
-window.makeDataSource = function () {
-  var indexName = null
+window.dataSourceKinds = {
+  'Couchbase FTS': {
+    factory: function (ftsIndexName) {
+      ftsIndexName = ftsIndexName || defaultFTSIndexName()
 
+      return {
+        url: '/api/index/' + ftsIndexName + '/query',
+        kind: 'Couchbase FTS',
+        description: ftsIndexName
+      }
+    }
+  }
+}
+
+function defaultFTSIndexName () {
+  return window.locationHashStartGet('ftsIndexName') ||
+         window.locationHashStartGet('indexName') ||
+         'unknown-FTS-index'
+}
+
+window.locationHashStart = window.location.hash || '' // "#/foo?x=y,a=b"
+
+window.locationHashStartGet = function (key) {
   var a = window.locationHashStart.split('?') // ["#/foo", "x=y,a=b"]
   var q = a[a.length - 1].split(',')
   for (var i = 0; i < q.length; i++) {
     var kv = q[i].split('=')
-    if (kv[0] === 'indexName') {
-      indexName = kv[1]
+    if (kv[0] === key) {
+      return kv[1]
     }
   }
 
-  indexName = indexName || 'default'
-
-  return {
-    url: '/api/index/' + indexName + '/query',
-    kind: 'Couchbase',
-    description: 'FTS index / ' + indexName
-  }
+  return null
 }
 
 /* eslint-disable no-new */

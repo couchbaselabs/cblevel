@@ -114,7 +114,7 @@
             <img src="static/lib/AdminLTE-2.3.6/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
             <p>
               Steve Yen - technology
-              <small>since 1981</small>
+              <small>since the day-glo 80's</small>
             </p>
           </li>
           <!-- Menu Body -->
