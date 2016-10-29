@@ -332,6 +332,7 @@ export default {
       page.result.request = this.searchInput || ''
       page.result.resultId = null
       page.result.err = null
+      page.panels = []
 
       var dsName = page.dataSourceName || 'default'
       var ds = this.dataSources[dsName]
@@ -358,14 +359,12 @@ export default {
 
           page.result.resultId = window.resultRegistryAdd(data)
           page.result.err = null
-
-          if (page.panels.length <= 0) {
-            page.panels = autoCreatePanels(data)
-          }
+          page.panels = autoCreatePanels(data)
         },
         failure: (err) => {
           page.result.resultId = null
           page.result.err = err
+          page.panels = []
         }
       })
     }
