@@ -40,7 +40,7 @@
           </span>
         </div>
 
-        <div class="input-group searchAdvanced">
+        <div class="input-group searchAdvanced" style="width: 90%;">
           <div class="checkbox">
             <label>
               <input v-model="searchAdvanced" type="checkbox"/>
@@ -48,44 +48,55 @@
             </label>
           </div>
 
-          <div v-if="searchAdvanced" class="searchAdvanced box">
-            <div class="box-body">
-                <div class="form-group">
-                  <label class="form-label">From (number, start at result index, 0-based)</label>
-                  <input type="text"
-                         class="form-control" placeholder="0">
+          <div v-if="searchAdvanced"
+               class="row searchAdvanced">
+            <div class="col-md-6">
+              <div class="box">
+                <div class="box-body">
+                  <div class="form-group">
+                    <label class="form-label">
+                      Size (integer, max number of results)</label>
+                    <input v-model="searchSize"
+                           type="text"
+                           class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">
+                      From (integer, start at result, 0-based)</label>
+                    <input v-model="searchFrom"
+                           type="text"
+                           class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Fields (strings)</label>
+                    <textarea v-model="searchFields"
+                              class="form-control"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Sort</label>
+                    <textarea v-model="searchSort"
+                              class="form-control"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Highlight</label>
+                    <textarea v-model="searchHighlight"
+                              class="form-control"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Facets</label>
+                    <textarea v-model="searchFacets"
+                              class="form-control"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">
+                      <input v-model="searchExplain" type="checkbox"/> Explain
+                    </label>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label class="form-label">Size (number, max number of results)</label>
-                  <input type="text"
-                         class="form-control" placeholder="10000">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Fields (comma separated)</label>
-                  <input type="text"
-                         class="form-control" placeholder="*">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Facets (json object)</label>
-                  <input type="text"
-                         class="form-control" placeholder="{}">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Highlight (json object)</label>
-                  <input type="text"
-                         class="form-control" placeholder="{}">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Sort (json object)</label>
-                  <input type="text"
-                         class="form-control" placeholder="{}">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">
-                    <input type="checkbox"/>
-                      explain
-                  </label>
-                </div>
+              </div>
+            </div>
+            <div class="col-md-5">
+              <pre>{{searchRequest}}</pre>
             </div>
           </div>
         </div>
@@ -304,12 +315,31 @@ export default {
   data () {
     return {
       searchInput: null, // Ephemeral model for the search input control.
-      searchAdvanced: false
+      searchAdvanced: false,
+      searchSize: 10000,
+      searchFrom: 0,
+      searchFields: '*',
+      searchSort: '[]',
+      searchHighlight: '{ "style": null, "fields": [] }',
+      searchFacets: '{}',
+      searchExplain: false
     }
   },
   computed: {
     page_id () { return pageId(this) },
-    page () { return this.pages[pageId(this)] }
+    page () { return this.pages[pageId(this)] },
+    searchRequest () {
+      return {
+        query: { query: this.searchInput || '' },
+        size: +this.searchSize || 0,
+        from: +this.searchFrom || 0,
+        fields: this.searchFields.split(','),
+        sort: JSON.parse(this.searchSort) || null,
+        highlight: JSON.parse(this.searchHighlight) || null,
+        facets: JSON.parse(this.searchFacets) || null,
+        explain: this.searchExplain
+      }
+    }
   },
   methods: {
     pageRename (event) {
@@ -377,14 +407,13 @@ export default {
         return
       }
 
+      var searchRequest = this.searchRequest
+      console.log(searchRequest)
+
       window.$.ajax({
         type: 'POST',
         url: ds.url,
-        data: JSON.stringify({
-          fields: ['*'],
-          query: {query: page.result.request},
-          size: 10000
-        }),
+        data: JSON.stringify(this.searchRequest),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         success: (data) => {
