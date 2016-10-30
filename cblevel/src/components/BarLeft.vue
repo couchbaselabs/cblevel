@@ -6,7 +6,7 @@
     <section class="sidebar">
       <!-- Sidebar dataSources -->
       <ul class="sidebar-menu">
-        <li class="header">DATA SOURCES</li>
+        <li class="header">INDEXES</li>
       </ul>
 
       <div v-for="(ds, ds_id, ds_index) in dataSources"
