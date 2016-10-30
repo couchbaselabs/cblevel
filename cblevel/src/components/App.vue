@@ -72,6 +72,10 @@ export default {
 </script>
 
 <style>
+body.skin-blue {
+  background: #222d32;
+}
+
 .sidebar-menu a.router-link-active {
   color: #fff;
 }
