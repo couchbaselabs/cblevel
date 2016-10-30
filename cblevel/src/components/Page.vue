@@ -27,16 +27,67 @@
 
     <!-- Page content -->
     <section class="content">
-      <form v-on:submit.prevent="searchGo">
+      <form v-on:submit.prevent="searchGo" role="form">
         <div class="input-group">
           <input v-model="searchInput"
                  type="text" class="form-control"
                  placeholder="please enter a search..."/>
+
           <span class="input-group-btn">
             <button type="submit" class="btn btn-flat">
               <i class="fa fa-search"></i>
             </button>
           </span>
+        </div>
+
+        <div class="input-group searchAdvanced">
+          <div class="checkbox">
+            <label>
+              <input v-model="searchAdvanced" type="checkbox"/>
+                Show advanced options
+            </label>
+          </div>
+
+          <div v-if="searchAdvanced" class="searchAdvanced box">
+            <div class="box-body">
+                <div class="form-group">
+                  <label class="form-label">From (number, start at result index, 0-based)</label>
+                  <input type="text"
+                         class="form-control" placeholder="0">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Size (number, max number of results)</label>
+                  <input type="text"
+                         class="form-control" placeholder="10000">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Fields (comma separated)</label>
+                  <input type="text"
+                         class="form-control" placeholder="*">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Facets (json object)</label>
+                  <input type="text"
+                         class="form-control" placeholder="{}">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Highlight (json object)</label>
+                  <input type="text"
+                         class="form-control" placeholder="{}">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Sort (json object)</label>
+                  <input type="text"
+                         class="form-control" placeholder="{}">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">
+                    <input type="checkbox"/>
+                      explain
+                  </label>
+                </div>
+            </div>
+          </div>
         </div>
       </form>
 
@@ -252,7 +303,8 @@ export default {
   props: ['pages', 'dataSources'],
   data () {
     return {
-      searchInput: null // Ephemeral model for the search input control.
+      searchInput: null, // Ephemeral model for the search input control.
+      searchAdvanced: false
     }
   },
   computed: {
@@ -392,5 +444,12 @@ export default {
 }
 .content-header > .page-options > li + li:before {
   content: '>\00a0';
+}
+
+.searchAdvanced {
+  margin-left: 1em;
+}
+.searchAdvanced .form-control {
+  margin-bottom: 10px;
 }
 </style>
