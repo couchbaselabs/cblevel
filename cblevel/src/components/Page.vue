@@ -580,9 +580,11 @@ export default {
   margin-left: 2em;
 }
 .searchExamples dd {
-  margin-bottom: 1em;
   font-family: monospace;
   font-size: 9pt;
   white-space: pre;
+}
+.searchExamples dd+dt {
+  margin-top: .8em;
 }
 </style>
