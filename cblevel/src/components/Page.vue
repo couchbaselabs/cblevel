@@ -329,8 +329,15 @@ export default {
     page_id () { return pageId(this) },
     page () { return this.pages[pageId(this)] },
     searchRequest () {
+      var query = this.searchInput || ''
+      if (query.charAt(0) === '{') {
+        query = JSON.parse(query)
+      } else {
+        query = { query: query }
+      }
+
       return {
-        query: { query: this.searchInput || '' },
+        query: query,
         size: +this.searchSize || 0,
         from: +this.searchFrom || 0,
         fields: this.searchFields.split(','),
