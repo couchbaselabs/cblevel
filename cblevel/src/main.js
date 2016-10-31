@@ -78,7 +78,7 @@ window.locationHashStartGet = function (key) {
 }
 
 /* eslint-disable no-new */
-new Vue({
+window.mainVue = new Vue({
   el: '#app',
   template: '<App/>',
   components: { App },
