@@ -160,7 +160,7 @@ OPERATOR: <i>0</i> = OR, <i>1</i> = AND</dd>
   "inclusive_max": <i>false</i>,
   "field": "<i>fieldName</i>" }</dd>
                   <dt>date range</dt>
-                  <dd>{ "start": <i>2001-10-09T10:20:30-08:00</i>",
+                  <dd>{ "start": <i>"2001-10-09T10:20:30-08:00</i>",
   "end": "<i>2016-10-31</i>",
   "inclusive_start": <i>false</i>,
   "inclusive_end": <i>false</i>,
