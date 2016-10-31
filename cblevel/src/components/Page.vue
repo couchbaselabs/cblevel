@@ -154,8 +154,7 @@ OPERATOR: <i>0</i> = OR, <i>1</i> = AND</dd>
                   <dt>query string</dt>
                   <dd>{ "query": "<i>the lazy dog</i>" }</dd>
                   <dt>numeric range</dt>
-                  <dd>{ "min": <i>10</i>,
-  "max": <i>99</i>,
+                  <dd>{ "min": <i>10</i>, "max": <i>99</i>,
   "inclusive_min": <i>false</i>,
   "inclusive_max": <i>false</i>,
   "field": "<i>fieldName</i>" }</dd>
