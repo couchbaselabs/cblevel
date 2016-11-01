@@ -48,8 +48,9 @@
             </label>
           </div>
 
-          <div v-if="searchAdvanced"
-               class="row searchAdvanced">
+          <transition name="fade">
+           <div v-if="searchAdvanced"
+                class="row searchAdvanced">
             <div class="col-md-6">
               <div class="box">
                 <div class="box-body">
@@ -98,7 +99,8 @@
             <div class="col-md-5">
               <pre>{{searchRequest}}</pre>
             </div>
-          </div>
+           </div>
+          </transition>
 
           <div>
             <div class="checkbox">
@@ -108,8 +110,9 @@
               </label>
             </div>
 
-            <div v-if="searchExamples"
-                 class="searchExamples box">
+            <transition name="fade">
+             <div v-if="searchExamples"
+                  class="searchExamples box">
               <div class="box-body row">
                 <dl class="col-md-4">
                   <dt>fuzzy</dt>
@@ -183,7 +186,8 @@ OPERATOR: <i>0</i> = OR, <i>1</i> = AND</dd>
                   <dd>{ "ids": [ "<i>docId1</i>", &hellip; ] }</dd>
                 </dl>
               </div>
-            </div>
+             </div>
+            </transition>
           </div>
         </div>
       </form>
@@ -586,5 +590,12 @@ export default {
 }
 .searchExamples dd+dt {
   margin-top: .8em;
+}
+
+.fade-enter-active {
+  transition: opacity .5s
+}
+.fade-enter {
+  opacity: 0
 }
 </style>
