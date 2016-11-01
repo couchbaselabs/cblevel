@@ -22,57 +22,57 @@
         </div>
 
         <transition name="fade">
-         <div v-if="searchAdvanced"
-              class="row searchAdvanced">
-          <div class="col-md-6">
-            <div class="box">
-              <div class="box-body">
-                <div class="form-group">
-                  <label class="form-label">
-                    Size (integer, max number of results)</label>
-                  <input v-model="searchSize"
-                         type="text"
-                         class="form-control">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">
-                    From (integer, start at result, 0-based)</label>
-                  <input v-model="searchFrom"
-                         type="text"
-                         class="form-control">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Fields (strings)</label>
-                  <textarea v-model="searchFields"
-                            class="form-control"></textarea>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Sort</label>
-                  <textarea v-model="searchSort"
-                            class="form-control"></textarea>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Highlight</label>
-                  <textarea v-model="searchHighlight"
-                            class="form-control"></textarea>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Facets</label>
-                  <textarea v-model="searchFacets"
-                            class="form-control"></textarea>
-                </div>
-                <div class="form-group">
-                  <label class="form-label">
-                    <input v-model="searchExplain" type="checkbox"/> Explain
-                  </label>
+          <div v-if="searchAdvanced"
+               class="row searchAdvanced">
+            <div class="col-md-6">
+              <div class="box">
+                <div class="box-body">
+                  <div class="form-group">
+                    <label class="form-label">
+                      Size (integer, max number of results)</label>
+                    <input v-model="searchSize"
+                           type="text"
+                           class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">
+                      From (integer, start at result, 0-based)</label>
+                    <input v-model="searchFrom"
+                           type="text"
+                           class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Fields (strings)</label>
+                    <textarea v-model="searchFields"
+                              class="form-control"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Sort</label>
+                    <textarea v-model="searchSort"
+                              class="form-control"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Highlight</label>
+                    <textarea v-model="searchHighlight"
+                              class="form-control"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Facets</label>
+                    <textarea v-model="searchFacets"
+                              class="form-control"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">
+                      <input v-model="searchExplain" type="checkbox"/> Explain
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
+            <div class="col-md-5">
+              <pre>{{searchRequest}}</pre>
+            </div>
           </div>
-          <div class="col-md-5">
-            <pre>{{searchRequest}}</pre>
-          </div>
-         </div>
         </transition>
 
         <div>
