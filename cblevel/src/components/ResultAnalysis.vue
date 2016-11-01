@@ -1,6 +1,5 @@
 <template>
-  <div v-if="result.resultId && results.results.length > 0"
-       class="box">
+  <div v-if="result.resultId && results.results.length > 0">
     <div class="box-body no-padding resultAnalysis">
       <table v-if="results.analysis"
              v-on:click="resultClick"

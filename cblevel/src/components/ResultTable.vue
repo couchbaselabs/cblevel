@@ -1,5 +1,5 @@
 <template>
-  <div v-if="result.request" class="box">
+  <div v-if="result.request">
     <div class="box-header">
       <h3 class="box-title">{{result.request}}</h3>
 

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="box">
+    <div v-if="kind && kind != 'panel'"
+         class="box">
       <div v-if="label"
            class="box-header">
         <h4 class="box-title">{{label}}</h4>
@@ -17,24 +18,15 @@
                    v-bind:options="options"></resultTable>
     </div>
 
-    <div v-if="kind == 'panel'"
-         class="row">
+    <div v-bind:class="{ 'row': kind == 'panel' }">
       <div v-for="subPanel in panels"
-           class="col-lg-4">
+           v-bind:class="{ 'col-lg-4': kind == 'panel' }">
         <panel v-bind:page="page"
                v-bind:kind="subPanel.kind"
                v-bind:label="subPanel.label"
                v-bind:options="subPanel.options"
                v-bind:panels="subPanel.panels"></panel>
       </div>
-    </div>
-    <div v-else
-         v-for="subPanel in panels">
-      <panel v-bind:page="page"
-             v-bind:kind="subPanel.kind"
-             v-bind:label="subPanel.label"
-             v-bind:options="subPanel.options"
-             v-bind:panels="subPanel.panels"></panel>
     </div>
   </div>
 </template>
