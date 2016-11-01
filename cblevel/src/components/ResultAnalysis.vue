@@ -1,30 +1,45 @@
 <template>
-  <div v-if="result.resultId && results.results.length > 0">
-    <div class="box-body no-padding resultAnalysis">
-      <table v-if="results.analysis"
-             v-on:click="resultClick"
-             class="table">
-        <tbody>
-        <tr>
-          <th style="width: 10px">Field</th>
-          <th>Type Counts</th>
-          <th>#&nbsp;Unique Values</th>
-          <th>Value Postings</th>
-        </tr>
-        <tr v-for="(keyInfo, key) in results.analysis.keyInfos"">
-          <td>{{key}}</td>
-          <td class="box-body">
-            <div v-for="(count, valType) in keyInfo.valTypeCounts">
-               {{valType}}: {{count}}
-            </div>
-          </td>
-          <td>{{keyInfo.valToIdNumsSize}}</td>
-          <td>
-            <div class="postings">{{keyInfo.valToIdNums}}</div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+  <div v-if="result.request">
+    <div class="box-header">
+      <h3 class="box-title">{{result.request}} (analysis)</h3>
+
+      <span v-if="result.resultId"
+            class="pull-right-container">
+        <small class="label pull-right bg-green">
+          {{results.results.length}} of
+          {{results.resultsTotal}}
+        </small>
+      </span>
+    </div>
+    <!-- /.box-header -->
+
+    <div v-if="result.resultId && results.results.length > 0">
+      <div class="box-body no-padding resultAnalysis">
+        <table v-if="results.analysis"
+               v-on:click="resultClick"
+               class="table">
+          <tbody>
+          <tr>
+            <th style="width: 10px">Field</th>
+            <th>Type Counts</th>
+            <th>#&nbsp;Unique Values</th>
+            <th>Value Postings</th>
+          </tr>
+          <tr v-for="(keyInfo, key) in results.analysis.keyInfos"">
+            <td>{{key}}</td>
+            <td class="box-body">
+              <div v-for="(count, valType) in keyInfo.valTypeCounts">
+                {{valType}}: {{count}}
+              </div>
+            </td>
+            <td>{{keyInfo.valToIdNumsSize}}</td>
+            <td>
+              <div class="postings">{{keyInfo.valToIdNums}}</div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
