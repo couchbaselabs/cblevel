@@ -56,7 +56,7 @@ window.nextChartId = 1
 
 export default {
   name: 'resultChart',
-  props: ['options'],
+  props: ['page', 'options'],
   data () {
     return { elId: null }
   },

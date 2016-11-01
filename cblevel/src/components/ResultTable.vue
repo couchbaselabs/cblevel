@@ -87,8 +87,11 @@
 <script>
 export default {
   name: 'resultTable',
-  props: ['result'],
+  props: ['page'],
   computed: {
+    result () {
+      return this.page.result
+    },
     results () {
       return window.resultRegistry[this.result.resultId]
     }

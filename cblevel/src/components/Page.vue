@@ -192,35 +192,9 @@ OPERATOR: <i>0</i> = OR, <i>1</i> = AND</dd>
         </div>
       </form>
 
-      <resultTable v-bind:result="page.result"></resultTable>
-
-      <div v-for="panel in page.panels">
-        <div v-if="panel.panels"
-             class="row">
-          <div v-for="subPanel in panel.panels"
-               class="col-lg-3 col-xs-6">
-            <div class="box">
-              <div v-if="subPanel.panelLabel"
-                   class="box-header">
-                <h4 class="box-title">{{subPanel.panelLabel}}</h4>
-              </div>
-
-              <resultChart v-if="subPanel.panelKind == 'resultChart'"
-                           v-bind:options="subPanel.options"></resultChart>
-            </div>
-          </div>
-        </div>
-
-        <div v-else class="box">
-          <div v-if="panel.panelLabel"
-               class="box-header">
-            <h4 class="box-title">{{panel.panelLabel}}</h4>
-          </div>
-
-          <resultChart v-if="panel.panelKind == 'resultChart'"
-                       v-bind:options="panel.options"></resultChart>
-        </div>
-      </div>
+      <panel v-if="page.panels"
+             v-bind:page="page"
+             v-bind:panels="page.panels"></panel>
     </section>
   </div>
 
@@ -237,8 +211,7 @@ import Lazy from 'lazy.js'
 
 import moment from 'moment'
 
-import ResultChart from './ResultChart'
-import ResultTable from './ResultTable'
+import panel from './panel'
 
 function pageId ($this) {
   return $this.$route.params.page_id
@@ -355,8 +328,8 @@ function autoCreatePanels (resultId, data) {
 
     if (keyInfo.valToIdNumsSize >= 10) {
       panels.unshift({
-        panelLabel: 'field: ' + key,
-        panelKind: 'resultChart',
+        kind: 'resultChart',
+        label: 'field: ' + key,
         options: {
           resultChartType: 'bar',
           resultId: resultId,
@@ -366,8 +339,8 @@ function autoCreatePanels (resultId, data) {
       })
     } else {
       subPanels.push({
-        panelLabel: 'field: ' + key,
-        panelKind: 'resultChart',
+        kind: 'resultChart',
+        label: 'field: ' + key,
         options: {
           resultChartType: 'doughnut',
           resultId: resultId,
@@ -376,9 +349,9 @@ function autoCreatePanels (resultId, data) {
         panels: null
       })
 
-      if (subPanels.length >= 4) {
+      if (subPanels.length >= 3) {
         panels.push({
-          panelKind: 'panel',
+          kind: 'panel',
           panels: subPanels
         })
         subPanels = []
@@ -388,10 +361,12 @@ function autoCreatePanels (resultId, data) {
 
   if (subPanels.length > 0) {
     panels.push({
-      panelKind: 'panel',
+      kind: 'panel',
       panels: subPanels
     })
   }
+
+  panels.unshift({ kind: 'resultTable' })
 
   return panels
 }
@@ -400,7 +375,7 @@ function autoCreatePanels (resultId, data) {
 
 export default {
   name: 'page',
-  components: { ResultChart, ResultTable },
+  components: { panel },
   props: ['pages', 'dataSources'],
   data () {
     return {
@@ -504,9 +479,6 @@ export default {
         window.alert('unknown data source: ' + dsName)
         return
       }
-
-      var searchRequest = this.searchRequest
-      console.log(searchRequest)
 
       window.$.ajax({
         type: 'POST',
