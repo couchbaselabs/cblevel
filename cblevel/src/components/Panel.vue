@@ -6,12 +6,15 @@
         <h4 class="box-title">{{label}}</h4>
       </div>
 
-      <resultTable v-if="kind == 'resultTable'"
-                   v-bind:page="page"
-                   v-bind:options="options"></resultTable>
+      <resultAnalysis v-if="kind == 'resultAnalysis'"
+                      v-bind:page="page"
+                      v-bind:options="options"></resultAnalysis>
       <resultChart v-if="kind == 'resultChart'"
                    v-bind:page="page"
                    v-bind:options="options"></resultChart>
+      <resultTable v-if="kind == 'resultTable'"
+                   v-bind:page="page"
+                   v-bind:options="options"></resultTable>
     </div>
 
     <div v-if="kind == 'panel'"
@@ -37,12 +40,14 @@
 </template>
 
 <script>
+import ResultAnalysis from './ResultAnalysis'
 import ResultChart from './ResultChart'
 import ResultTable from './ResultTable'
 
 export default {
   name: 'panel',
   components: {
+    ResultAnalysis,
     ResultChart,
     ResultTable
   },

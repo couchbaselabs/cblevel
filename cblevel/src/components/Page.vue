@@ -366,6 +366,7 @@ function autoCreatePanels (resultId, data) {
     })
   }
 
+  panels.unshift({ kind: 'resultAnalysis' })
   panels.unshift({ kind: 'resultTable' })
 
   return panels
