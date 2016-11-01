@@ -8,7 +8,8 @@
 
         <span class="input-group-btn">
           <button type="submit" class="btn btn-flat">
-            <i class="fa fa-search"></i>
+            <i class="fa"
+               v-bind:class="{ 'fa-search': !page.result.request || (page.result.err || page.result.resultId), 'fa-refresh fa-spin': page.result.request && (!page.result.err && !page.result.resultId) }"></i>
           </button>
         </span>
       </div>

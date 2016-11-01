@@ -13,13 +13,6 @@
     </div>
     <!-- /.box-header -->
 
-    <div v-if="!result.err && !result.resultId"
-         class="box-body">
-      <div class="overlay">
-        <i class="fa fa-refresh fa-spin"></i>
-      </div>
-    </div>
-
     <div v-if="result.err"
          class="alert alert-error">
       <h4><i class="icon fa fa-warning"></i> Error</h4>
