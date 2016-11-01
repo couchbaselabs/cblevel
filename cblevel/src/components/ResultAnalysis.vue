@@ -1,5 +1,5 @@
 <template>
-  <div v-if="result.request">
+  <div v-if="result.request && results.analysis">
     <div class="box-header">
       <h3 class="box-title">{{result.request}} (analysis)</h3>
 
