@@ -24,20 +24,20 @@ OPERATOR: <i>0</i> = OR, <i>1</i> = AND</dd>
   "field": "<i>fieldName</i>",
   "analyzer": "<i>analyzerName</i>" }</dd>
        <dt>boolean</dt>
-       <dd>{ "must": { &hellip; },
-  "must_not": { &hellip; },
-  "should": { &hellip; } }</dd>
+       <dd>{ "must": { <i>conjuncts</i> },
+  "must_not": { <i>disjuncts</i> },
+  "should": { <i>disjuncts</i> } }</dd>
      </dl>
      <dl class="col-md-4">
        <dt>phrase</dt>
        <dd>{ "terms": [ "<i>lazy</i>", "<i>dog</i>" ],
   "field": "<i>fieldName</i>" }</dd>
        <dt>conjuncts (AND)</dt>
-       <dd>{ "conjuncts": { &hellip; } }
+       <dd>{ "conjuncts": [ &hellip; ] }
 
 <i>+the +lazy +dog</i></dd>
        <dt>disjuncts (OR)</dt>
-       <dd>{ "disjuncts": { &hellip; },
+       <dd>{ "disjuncts": [ &hellip; ],
   "min": <i>0</i> }
 
 <i>the lazy dog</i></dd>
